@@ -47,9 +47,9 @@ html, body{
 }
 
 .navbar-img{
-    height: 2rem;
+    height: 20px;
     position: absolute;
-    top: calc(50% - 1rem);
+    top: calc(50% - 10px);
     right: 3%;
 }
 
