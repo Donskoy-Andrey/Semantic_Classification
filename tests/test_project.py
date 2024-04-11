@@ -1,4 +1,4 @@
-from semantic import __version__
+from semantic.backend import __version__
 
 
 def test_version():
