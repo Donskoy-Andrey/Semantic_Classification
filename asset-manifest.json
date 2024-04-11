@@ -1,0 +1,19 @@
+{
+  "files": {
+    "main.css": "/Semantic_Classification/static/css/main.c37d6cc7.css",
+    "main.js": "/Semantic_Classification/static/js/main.1fac2613.js",
+    "static/media/ivan.png": "/Semantic_Classification/static/media/ivan.34ee65875a828811ddb8.png",
+    "static/media/ali.png": "/Semantic_Classification/static/media/ali.52cc934a0cea0b33f0f7.png",
+    "static/media/artmed.png": "/Semantic_Classification/static/media/artmed.f56c80cd60d02b7c9bdf.png",
+    "static/media/tmn.png": "/Semantic_Classification/static/media/tmn.6b7f1099a38ccdec11d0.png",
+    "static/media/donskow.png": "/Semantic_Classification/static/media/donskow.90c1a3f2cba7c41df4b2.png",
+    "static/media/hacks_ai.png": "/Semantic_Classification/static/media/hacks_ai.b345a1f574973c3bd197.png",
+    "index.html": "/Semantic_Classification/index.html",
+    "main.c37d6cc7.css.map": "/Semantic_Classification/static/css/main.c37d6cc7.css.map",
+    "main.1fac2613.js.map": "/Semantic_Classification/static/js/main.1fac2613.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.c37d6cc7.css",
+    "static/js/main.1fac2613.js"
+  ]
+}
