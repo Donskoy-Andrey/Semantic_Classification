@@ -146,7 +146,7 @@ typing = ["typing-extensions (>=4.8)"]
 name = "flake8"
 version = "7.0.0"
 description = "the modular source code checker: pep8 pyflakes and co"
-category = "main"
+category = "dev"
 optional = false
 python-versions = ">=3.8.1"
 
@@ -328,7 +328,7 @@ python-dateutil = ">=2.7"
 name = "mccabe"
 version = "0.7.0"
 description = "McCabe checker, plugin for flake8"
-category = "main"
+category = "dev"
 optional = false
 python-versions = ">=3.6"
 
@@ -583,7 +583,7 @@ testing = ["pytest", "pytest-benchmark"]
 name = "pycodestyle"
 version = "2.11.1"
 description = "Python style guide checker"
-category = "main"
+category = "dev"
 optional = false
 python-versions = ">=3.8"
 
@@ -618,7 +618,7 @@ typing-extensions = ">=4.6.0,<4.7.0 || >4.7.0"
 name = "pyflakes"
 version = "3.2.0"
 description = "passive checker of Python programs"
-category = "main"
+category = "dev"
 optional = false
 python-versions = ">=3.8"
 
@@ -1061,7 +1061,7 @@ zstd = ["zstandard (>=0.18.0)"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.10"
-content-hash = "6ad9299b03b6c97d1a90ca2dacedd544d0fecac812a2d0d837354024dfb3c035"
+content-hash = "4381683633fdf1f2186c77e9240ccc40cbf0e27a8ae8b3449c42d4557f6c806f"
 
 [metadata.files]
 annotated-types = []
