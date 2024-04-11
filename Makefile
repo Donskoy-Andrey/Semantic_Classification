@@ -14,7 +14,7 @@ setup: install activate
 
 test:
 	@echo "Running tests..."
-	poetry run pytest tests/
+	poetry run pytest tests/ -v
 
 ## Run tests
 tests: test
