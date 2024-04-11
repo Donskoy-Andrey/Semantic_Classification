@@ -12,6 +12,17 @@ activate:
 ## Setup project
 setup: install activate
 
+## Pylint backend
+pylint:
+	pylint ./semantic/backend
+
+## Flake8 backend
+flake8:
+	flake8 ./semantic/backend
+
+## Lint code
+lint: pylint flake8
+
 test:
 	@echo "Running tests..."
 	poetry run pytest tests/ -v
