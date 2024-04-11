@@ -32,7 +32,7 @@ const Header = ({ currentPage, setCurrentPage }) => {
                     </ul>
                 </div>
             </div>
-            <img src={hacks_ai} alt="Logo" className="navbar-img"/>
+            <img src={hacks_ai} height="30px" alt="Logo" className="navbar-img"/>
         </nav>
     );
 };

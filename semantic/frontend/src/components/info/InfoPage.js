@@ -12,9 +12,10 @@ const InfoPage = () => {
             "picture": donskow,
             "job": "DS Газпромнефть",
             "education": ["Академия Аналитиков Авито, 2024", "Университет Сириус"],
-            "mail": "artiebears@mail.ru",
+            "mail": "donskoi.ae@gmail.com",
             "position": 'ML',
-            "tg": "https://t.me/doncheg"
+            "tg": "https://t.me/doncheg",
+            "github": "https://github.com/Donskoy-Andrey"
         },
         "ali": {
             "name": "Али Рамазанов",
@@ -23,7 +24,8 @@ const InfoPage = () => {
             "education": ["Tinkoff Education, 2023", "Университет Сириус"],
             "mail": "artiebears@mail.ru",
             "position": 'Backend',
-            "tg": "https://t.me/AliRamazanovN"
+            "tg": "https://t.me/AliRamazanovN",
+            "github": "https://github.com/AliRn9"
         },
         "artem": {
             "name": "Артем Медведев",
@@ -32,16 +34,18 @@ const InfoPage = () => {
             "education": ["VK Education, 2023", "Университет Сириус"],
             "mail": "artiebears@mail.ru",
             "position": 'Frontend',
-            "tg": "https://t.me/artiebears13"
+            "tg": "https://t.me/artiebears13",
+            "github": "https://github.com/artiebears13"
         },
         "ivan": {
             "name": "Иван Бутаков",
             "picture": ivan,
             "job": "ИВМ РАН",
             "education": ["ШАД, 2023", "МФТИ,Университет Сириус"],
-            "mail": "artiebears@mail.ru",
+            "mail": "vanessbut@yandex.ru",
             "position": 'ML',
-            "tg": "https://t.me/emptyhooks"
+            "tg": "https://t.me/emptyhooks",
+            "github": "https://github.com/Donskoy-Andrey"
         },
         "timofey": {
             "name": "Тимофей Щудро",
@@ -50,7 +54,8 @@ const InfoPage = () => {
             "education": ["Университет Сириус"],
             "mail": "artiebears@mail.ru",
             "position": 'DevOps',
-            "tg": "https://t.me/TeeMan508"
+            "tg": "https://t.me/TeeMan508",
+            "github": "https://github.com/Donskoy-Andrey"
         },
     };
 
@@ -76,7 +81,7 @@ const InfoPage = () => {
                                     <div className="icons">
                                         <a href={bro.tg}><i
                                             className="fa-brands fa-telegram fa-lg tg-icon"></i></a>
-                                        <a href='https://donskow.com'><i
+                                        <a href={bro.github}><i
                                             className="fa-brands fa-github fa-lg tg-icon"></i></a>
                                     </div>
                                 </div>
