@@ -37,6 +37,9 @@ clean:
 	find . -type d -name "__pycache__" -delete
 	rm -rf .pytest_cache
 
+stop-all-containers:
+	docker container stop $$(docker ps -a -q)
+
 rm-all-containers:
 	docker container rm $$(docker ps -a -q)
 
