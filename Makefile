@@ -50,7 +50,7 @@ rm-all-images:
 rm-all: rm-all-containers rm-all-images
 
 backend:
-	poetry run uvicorn semantic.backend.main:app --host 0.0.0.0 --reload --port 8000
+	poetry run uvicorn semantic.backend.main:app --host localhost --reload --port 8000
 
 ## Show help
 help:

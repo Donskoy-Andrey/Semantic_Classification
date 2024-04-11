@@ -10,4 +10,4 @@ CMD ["make", "setup"]
 
 EXPOSE 8000
 
-CMD ["poetry", "run", "uvicorn", "app.semantic.backend.main:app", "--host", "0.0.0.0", "--reload", "--port", "8000"]
+CMD ["poetry", "run", "uvicorn", "app.semantic.backend.main:app", "--host", "localhost", "--reload", "--port", "8000"]
