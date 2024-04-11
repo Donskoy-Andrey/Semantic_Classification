@@ -3,14 +3,12 @@ FROM node:20.10.0
 WORKDIR /app
 
 COPY ../../semantic/frontend/package*.json ./
+RUN npm install
 
 COPY ../../semantic/frontend .
 
-#RUN npm install
+EXPOSE 3000
 
-#EXPOSE 3000
-#
-#CMD ["npm", "run", "build"]
-#CMD ["npm", "install", "serve"]
+RUN npm install
 
-#CMD ["serve", "-s", "build"]
+CMD ["npm", "start"]
