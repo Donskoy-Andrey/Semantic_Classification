@@ -3,7 +3,6 @@ install:
 	@echo "Installing python dependencies..."
 	python3 -m pip install poetry
 	poetry install
-	poetry run pre-commit install
 
 ## Activate virtual environment
 activate:
