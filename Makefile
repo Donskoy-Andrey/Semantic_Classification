@@ -1,7 +1,7 @@
 ## Install Python dependencies
 install:
 	@echo "Installing python dependencies..."
-	python3 -m pip install poetry
+	pip install poetry
 	poetry install
 
 ## Activate virtual environment
@@ -30,12 +30,27 @@ test:
 ## Run tests
 tests: test
 
+## Run docker
+run:
+	docker-compose up -d
+
 ## Clean cache files
 clean:
 	@echo "Cleaning cache files..."
 	find . -type f -name "*.py[co]" -delete
 	find . -type d -name "__pycache__" -delete
 	rm -rf .pytest_cache
+
+rm-all-containers:
+	docker container rm $$(docker ps -a -q)
+
+rm-all-images:
+	docker image rm $$(docker images -a -q)
+
+rm-all: rm-all-containers rm-all-images
+
+backend:
+	poetry run uvicorn semantic.backend.main:app --host 0.0.0.0 --reload --port 8000
 
 ## Show help
 help:
