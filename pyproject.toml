@@ -3,11 +3,11 @@ name = "semantic_classification"
 version = "0.1.0"
 description = "Решение весеннего хакатона - 2024."
 authors = [
-    "Donskoi Andrei <donskoi.com@gmail.com>",
+    "Donskoi Andrei <donskoi.ae@gmail.com>",
     "Artem Medvedev <artiebears@mail.ru>",
     "Ali Ramazanov <ali_ramazanov_2000@mail.ru>",
-    "Ivan Butakov",
-    "Timofei Schcudro",
+    "Ivan Butakov <vanessbut@yandex.ru>",
+    "Timofei Schcudro <t.shshudro@alumni.nsu.ru>",
 ]
 packages = [
     { include = "semantic/backend", from = "." },
