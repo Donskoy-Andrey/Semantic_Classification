@@ -4,11 +4,13 @@ WORKDIR /app
 
 COPY ../../semantic/frontend/package*.json ./
 
-RUN npm install
-
 COPY ../../semantic/frontend .
 
-EXPOSE 3000
+#RUN npm install
 
-CMD ["npm", "run", "build"]
-CMD ["serve", "-s", "build"]
+#EXPOSE 3000
+#
+#CMD ["npm", "run", "build"]
+#CMD ["npm", "install", "serve"]
+
+#CMD ["serve", "-s", "build"]
