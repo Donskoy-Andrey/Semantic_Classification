@@ -5,20 +5,65 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="061bb50b-1d94-48a5-b615-44b9e56feb8e" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/hacathon_2024.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/package.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/source/frontend/src/components/main/style.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/source/frontend/src/components/new_main/style.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/data/.gitkeep" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/backend/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/docs/.gitkeep" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/backend/ali.png" beforeDir="false" afterPath="$PROJECT_DIR$/source/frontend/src/img/ali.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/backend/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/source/backend/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/poetry.lock" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/pyproject.toml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tests/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/source/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/source/frontend/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/.idea/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/source/frontend/.idea/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/.idea/frontend.iml" beforeDir="false" afterPath="$PROJECT_DIR$/source/frontend/.idea/frontend.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/source/frontend/.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/source/frontend/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/source/frontend/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/source/frontend/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/source/frontend/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/public/favicon.ico" beforeDir="false" afterPath="$PROJECT_DIR$/source/frontend/public/favicon.ico" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/public/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/source/frontend/public/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/public/logo192.png" beforeDir="false" afterPath="$PROJECT_DIR$/source/frontend/public/logo192.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/public/logo512.png" beforeDir="false" afterPath="$PROJECT_DIR$/source/frontend/public/logo512.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/public/manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/source/frontend/public/manifest.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/public/robots.txt" beforeDir="false" afterPath="$PROJECT_DIR$/source/frontend/public/robots.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/public/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/source/frontend/public/style.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/App.css" beforeDir="false" afterPath="$PROJECT_DIR$/source/frontend/src/App.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/source/frontend/src/App.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/footer/Footer.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/source/frontend/src/components/footer/Footer.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/headers/Header.js" beforeDir="false" afterPath="$PROJECT_DIR$/source/frontend/src/components/headers/Header.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/headers/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/source/frontend/src/components/headers/style.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/info/InfoPage.js" beforeDir="false" afterPath="$PROJECT_DIR$/source/frontend/src/components/info/InfoPage.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/info/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/source/frontend/src/components/info/style.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/main/MainPage.js" beforeDir="false" afterPath="$PROJECT_DIR$/source/frontend/src/components/main/MainPage.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/main/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/source/backend/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/modal/Modal.js" beforeDir="false" afterPath="$PROJECT_DIR$/source/frontend/src/components/modal/Modal.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/new_main/MainPage.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/source/frontend/src/components/new_main/MainPage.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/new_main/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/source/frontend/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/img/ali.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/img/artmed.png" beforeDir="false" afterPath="$PROJECT_DIR$/source/frontend/src/img/artmed.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/img/donskow.png" beforeDir="false" afterPath="$PROJECT_DIR$/source/frontend/src/img/donskow.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/img/hacks_ai.png" beforeDir="false" afterPath="$PROJECT_DIR$/source/frontend/src/img/hacks_ai.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/img/ivan.png" beforeDir="false" afterPath="$PROJECT_DIR$/source/frontend/src/img/ivan.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/img/logo192.png" beforeDir="false" afterPath="$PROJECT_DIR$/source/frontend/src/img/logo192.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/img/tmn.png" beforeDir="false" afterPath="$PROJECT_DIR$/source/frontend/src/img/tmn.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/img/Задачи 2024 — кратко.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/source/frontend/src/img/Задачи 2024 — кратко.xlsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/source/frontend/src/index.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/source/frontend/src/index.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -30,18 +75,31 @@
   "associatedIndex": 0
 }]]></component>
   <component name="ProjectId" id="2exQMJBdUkPjumNbApq6iq8ar3a" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "ASKED_MARK_IGNORED_FILES_AS_EXCLUDED": "true",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "git-widget-placeholder": "master",
-    "last_opened_file_path": "/home/user/Projects/hackatons/semantic"
+    "last_opened_file_path": "/home/user/Projects/hackatons/semantic",
+    "run.code.analysis.last.selected.profile": "pProject Default"
   }
 }]]></component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/data" />
+      <recent name="$PROJECT_DIR$" />
+      <recent name="$PROJECT_DIR$/semantic_classification" />
+      <recent name="$PROJECT_DIR$/semantic_documents" />
+    </key>
+  </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>

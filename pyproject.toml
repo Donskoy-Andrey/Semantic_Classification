@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "semantic_classification"
+version = "0.1.0"
+description = "Решение весеннего хакатона - 2024."
+authors = [
+    "Donskoi Andrei <donskoi.com@gmail.com>",
+    "Artem Medvedev <artiebears@mail.ru>",
+    "Ali Ramazanov <ali_ramazanov_2000@mail.ru>",
+    "Ivan Butakov",
+    "Timofei Schcudro",
+]
+packages = [
+    { include = "semantic.backend", from = "." },
+]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "3.9"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
