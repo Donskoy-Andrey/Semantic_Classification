@@ -30,10 +30,6 @@ test:
 ## Run tests
 tests: test
 
-## Run docker
-run:
-	docker-compose up -d
-
 ## Clean cache files
 clean:
 	@echo "Cleaning cache files..."
@@ -49,8 +45,16 @@ rm-all-images:
 
 rm-all: rm-all-containers rm-all-images
 
+frontend:
+	@echo "$$(tput bold)Starting frontend:$$(tput sgr0)"
+	docker-compose up -d
+
 backend:
+	@echo "$$(tput bold)Starting backend:$$(tput sgr0)"
 	poetry run uvicorn semantic.backend.main:app --host localhost --reload --port 8000
+
+## Run docker
+run: frontend backend
 
 ## Show help
 help:
