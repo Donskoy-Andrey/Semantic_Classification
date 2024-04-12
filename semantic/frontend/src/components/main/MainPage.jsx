@@ -19,8 +19,22 @@ class MainPage extends React.Component {
             loading: false,
             image: false,
             isModalOpen: false,
-            visited: false
+            visited: false,
+            response_data: {}
         };
+    }
+
+    componentDidMount() {
+        fetch('http://localhost:8000/form_params')
+            .then(response => response.json())
+            .then(data => {
+                console.log("init data: ", data)
+                this.setState({documentTypes: data}); // Set the fetched data to state
+            })
+            .catch(error => {
+                console.error('Error fetching data:', error);
+            });
+
     }
 
     setFiles = (files) => {
@@ -41,6 +55,10 @@ class MainPage extends React.Component {
     closeModal = () => {
         console.log("Modal closed");
         this.setState({ isModalOpen: false });
+    }
+
+    setResponse = (data) => {
+        this.setState({response_data: data})
     }
 
     sendExample = async (event, name) => {
@@ -87,8 +105,18 @@ class MainPage extends React.Component {
         return (
             <div className="main-page">
                 <div className="container mt-4 main-bg">
-                    <TypesDropdown onChange={this.onDocumentTypeChange} currentDocType={this.state.currentDocType} documentTypes={this.state.documentTypes}/>
-                    <FileUploader openModal={this.openModal} setFiles={this.setFiles} currentDocType={this.state.currentDocType}/>
+                    <TypesDropdown
+                        onChange={this.onDocumentTypeChange}
+                        currentDocType={this.state.currentDocType}
+                        documentTypes={this.state.documentTypes}
+                    />
+                    <FileUploader
+                        openModal={this.openModal}
+                        setFiles={this.setFiles}
+                        currentDocType={this.state.currentDocType}
+                        documentTypes={this.state.documentTypes}
+                        setResponse={this.setResponse}
+                    />
 
                     {loading && (
                         <div className="big-center loader"></div>

@@ -18,7 +18,7 @@ export const TypesDropdown = (props) => {
                 onChange={handleChange}
             >
                 {Object.keys(documentTypes).map(key => (
-                    <option key={key} value={key}>{documentTypes[key]}</option>
+                    <option key={key} value={key}>{documentTypes[key].name}</option>
                 ))}
             </select>
         </div>
