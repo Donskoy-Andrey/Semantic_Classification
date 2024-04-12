@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "semantic_classification",
+  "name": "Semantic document classification",
   "icons": [
     {
       "src": "favicon.ico",
