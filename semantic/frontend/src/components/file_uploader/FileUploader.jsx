@@ -6,6 +6,7 @@ const FileUploader = (props) => {
     const [selectedFiles, setSelectedFiles] = useState([]);
     const [loading, setLoading] = useState(false);
     const fileInputRef = useRef(null);
+    const docs_number = props.documentTypes[props.currentDocType].docs_number;
 
     const handleFileChange = (e) => {
         setSelectedFiles([...selectedFiles, ...e.target.files]);
@@ -13,6 +14,16 @@ const FileUploader = (props) => {
     };
 
     const checkFiles = (files) => {
+        if (!(files && files.length)) {
+            alert("Загрузите файлы")
+            return false;
+        }
+
+        if (files.length !== docs_number){
+            alert(`неверное количество документов (должно быть ${docs_number})`)
+            return false;
+        }
+
         for (let i = 0; i < files.length; i++) {
             const extension = files[i].name.split('.').pop().toLowerCase();
             if (!allowedFormats.includes(extension)){
@@ -37,12 +48,8 @@ const FileUploader = (props) => {
     const handleUpload = async () => {
         const formData = new FormData();
         console.log('currentDocType:', props.currentDocType);
-        if (selectedFiles.length === 0) {
-            alert('Выберите файлы');
-            return;
-        }
+
         if (!checkFiles(selectedFiles)){
-            alert('Удалите невалидные файлы');
             return;
         }
         for (let i = 0; i < selectedFiles.length; i++) {
@@ -60,7 +67,8 @@ const FileUploader = (props) => {
             setLoading(true);
             const response = await fetch('http://localhost:8000/upload', config);
             if (response.ok) {
-                console.log('Files uploaded successfully');
+                const data = await response.json(); // Await the response.json() promise
+                props.setResponse(data);
             } else {
                 console.error('Error uploading files:', response.statusText);
             }
@@ -98,7 +106,7 @@ const FileUploader = (props) => {
                 {/*<i className="fa-regular fa-file fa-big"></i>*/}
                 {/*<i className="fa-solid fa-file-export fa-big"></i>*/}
                 <i className="fa-solid fa-file-arrow-down fa-big"></i>
-                <h3>Перетащите файл сюда <br/>или <div className="text-warning">выберите вручную</div></h3>
+                <h3>Перетащите файл{docs_number > 1 ? `ы (${docs_number} шт.)`: ''} сюда <br/>или <div className="text-warning">выберите их вручную</div></h3>
                 <div className="drag-drop-field__extensions">pdf, doc, docx, xlsx, txt, rtf</div>
                 <input
                     type="file"
@@ -126,7 +134,6 @@ const FileUploader = (props) => {
                 ))
             )}
             </div>
-
         </div>
     );
 };

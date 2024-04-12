@@ -1,0 +1,17 @@
+{
+  "bank": {
+    "name": "банк",
+    "docs_number": 3,
+    "categories": ["test1", "test2", "test3"]
+  },
+  "test1": {
+    "name": "тест1",
+    "docs_number": 2,
+    "categories": ["test2", "test3"]
+  },
+  "test2": {
+    "name": "тест2",
+    "docs_number": 4,
+    "categories": ["test1", "test2", "test3", "test3"]
+  }
+}
