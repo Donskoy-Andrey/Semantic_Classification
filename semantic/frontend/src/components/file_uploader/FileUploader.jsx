@@ -2,6 +2,7 @@ import React, {useState, useRef} from 'react';
 
 const FileUploader = (props) => {
     const allowedFormats = ['pdf', 'doc', 'docx', 'xlsx', 'txt', 'rtf'];
+    const [formValid, setFormValid] = useState(false);
     const [selectedFiles, setSelectedFiles] = useState([]);
     const [loading, setLoading] = useState(false);
     const fileInputRef = useRef(null);
