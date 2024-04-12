@@ -23,7 +23,7 @@ const App = () => {
   };
 
   return (
-      <div>
+      <div className="App">
         <Header currentPage={currentPage} setCurrentPage={setCurrentPage} />
         {renderPage()}
         <Footer />
