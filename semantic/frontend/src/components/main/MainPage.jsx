@@ -76,6 +76,8 @@ class MainPage extends React.Component {
         return (
             <div className="main-page">
                 <div className="container mt-4 main-bg">
+                    <FileUploader openModal={this.openModal}/>
+
                     {loading && (
                         <div className="big-center loader"></div>
                     )}
@@ -88,7 +90,6 @@ class MainPage extends React.Component {
                             <p>This is the content of the modal.</p>
                         </Modal>
                     </div>
-                    <FileUploader openModal={this.openModal}/>
                 </div>
             </div>
         );

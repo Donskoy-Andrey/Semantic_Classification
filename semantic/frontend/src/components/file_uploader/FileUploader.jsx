@@ -109,6 +109,9 @@ const FileUploader = (props) => {
                 <button className="btn btn-primary" onClick={handleUpload}>Отправить</button>
                 <button className="btn btn-success modal-button" onClick={props.openModal}>Примеры</button>
             </div>
+            {loading && (
+                <div className="big-center loader"></div>
+            )}
             <div className="uploaded-file__container">
             {selectedFiles.length > 0 && (
                 selectedFiles.map((file, i) => (
@@ -119,9 +122,7 @@ const FileUploader = (props) => {
                 ))
             )}
             </div>
-            {loading && (
-                <div className="big-center loader"></div>
-            )}
+
         </div>
     );
 };
