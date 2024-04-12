@@ -7,23 +7,18 @@ services:
       - "8000:8000"
     volumes:
       - ./semantic/backend:/app/backend
-    command:
-#      - "python3 -m poetry install"
-      - "python3 -m poetry run uvicorn app.semantic.backend.main:app --host localhost --reload --port 8000"
-#      - ./Makefile:/app/Makefile
-#      - ./pyproject.toml:/app/pyproject.toml
-#      - ./pyproject.toml:/app/poetry.lock
+    command: >
+       /bin/sh -c "python -m poetry run uvicorn backend.main:app --host 0.0.0.0 --port 8000"
 
 
-#  frontend:
-#    build:
-#      context: .
-#      dockerfile: docker/frontend/Dockerfile
-#    ports:
-#      - "3000:3000"
-#    volumes:
-#      - ./semantic/frontend/src:/app/src
-#      - ./semantic/frontend/public:/app/public
-#      - ./semantic/frontend/package.json:/app/package.json
-#      - ./semantic/frontend/package.json:/app/package-lock.json
-#    image: frontend:latest
+  frontend:
+    build:
+      context: .
+      dockerfile: docker/frontend/Dockerfile
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./semantic/frontend/src:/app/src
+      - ./semantic/frontend/public:/app/public
+    command: >
+        /bin/sh -c "npm start"
