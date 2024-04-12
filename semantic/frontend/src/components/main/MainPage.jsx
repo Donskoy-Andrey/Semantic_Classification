@@ -2,6 +2,7 @@ import React from 'react';
 import "./style.css";
 import Modal from "../modal/Modal";
 import FileUploader from "../file_uploader/FileUploader";
+import {TypesDropdown} from "../types_dropdown/TypesDropdown";
 
 
 class MainPage extends React.Component {
@@ -9,6 +10,11 @@ class MainPage extends React.Component {
         super(props);
         this.state = {
             files: [],
+            currentDocType: "bank",
+            documentTypes: {
+                "bank": "банк",
+                "test": "тест"
+            },
             imageURL: null,
             loading: false,
             image: false,
@@ -19,6 +25,11 @@ class MainPage extends React.Component {
 
     setFiles = (files) => {
         this.setState({ files: files });
+    }
+
+    onDocumentTypeChange = (key) => {
+        this.setState({ currentDocType: key });
+        console.log("choose: ", key);
     }
 
 
@@ -76,7 +87,8 @@ class MainPage extends React.Component {
         return (
             <div className="main-page">
                 <div className="container mt-4 main-bg">
-                    <FileUploader openModal={this.openModal}/>
+                    <TypesDropdown onChange={this.onDocumentTypeChange} currentDocType={this.state.currentDocType} documentTypes={this.state.documentTypes}/>
+                    <FileUploader openModal={this.openModal} setFiles={this.setFiles} currentDocType={this.state.currentDocType}/>
 
                     {loading && (
                         <div className="big-center loader"></div>
