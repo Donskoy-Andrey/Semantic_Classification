@@ -1,7 +1,7 @@
 import './App.css';
 import React, { useState } from 'react';
 import Header from './components/headers/Header';
-import MainPage from './components/new_main/MainPage';
+import MainPage from './components/main/MainPage';
 import InfoPage from './components/info/InfoPage';
 import {Footer} from "./components/footer/Footer";
 import './index.css'
