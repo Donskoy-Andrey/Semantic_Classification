@@ -28,6 +28,7 @@ const FileUploader = (props) => {
             const extension = files[i].name.split('.').pop().toLowerCase();
             if (!allowedFormats.includes(extension)){
                 setFormValid(false);
+                alert("Неверный формат файла")
                 return false;
             }
         }
