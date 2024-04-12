@@ -36,6 +36,7 @@ const FileUploader = (props) => {
 
     const handleUpload = async () => {
         const formData = new FormData();
+        console.log('currentDocType:', props.currentDocType);
         if (selectedFiles.length === 0) {
             alert('Выберите файлы');
             return;
@@ -47,6 +48,8 @@ const FileUploader = (props) => {
         for (let i = 0; i < selectedFiles.length; i++) {
             formData.append('files', selectedFiles[i]);
         }
+        formData.append('doctype', props.currentDocType);
+
 
         const config = {
             method: 'POST',
@@ -61,6 +64,7 @@ const FileUploader = (props) => {
             } else {
                 console.error('Error uploading files:', response.statusText);
             }
+            props.setFiles(selectedFiles);
         } catch (error) {
             console.error('Error uploading files:', error);
         } finally {
