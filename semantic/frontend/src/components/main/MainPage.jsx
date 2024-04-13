@@ -59,13 +59,9 @@ class MainPage extends React.Component {
         this.setState({ isExampleModalOpen: false });
     }
     openTypeModal = () => {
-        const confirmation = prompt('Введите пароль:');
-        if (confirmation !== process.env.REACT_APP_PWD) {
-            alert("Неверный пароль!")
-            return
-        }
         this.setState({ isTypeModalOpen: true });
     }
+
 
     onNewType = (typeName, categories) => {
         console.log("onNewType", typeName, categories);
@@ -144,14 +140,15 @@ class MainPage extends React.Component {
             <div className="main-page">
                 <div className="container mt-4 main-bg">
                     <div className="main-header">
-                    <h3>Выберите тип документа:</h3>
+                        <h3>Выберите тип документа:</h3>
                         <OverlayTrigger
                             overlay={<Tooltip style={tooltipMargin}>Добавить тип документа</Tooltip>}
                         >
-                    <button
-                        className="btn btn-addtype"
-                        onClick={this.openTypeModal}
-                    >+</button>
+                            <button
+                                className="btn btn-addtype"
+                                onClick={this.openTypeModal}
+                            >+
+                            </button>
                         </OverlayTrigger>
                     </div>
                     <TypesDropdown
