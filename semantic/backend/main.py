@@ -18,6 +18,19 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+mapping = {
+    "proxy": "Доверенность",
+    "contract": "Договор",
+    "act": "Акт",
+    "application": "Заявление",
+    "order": "Приказ",
+    "invoice": "Счет",
+    "bill": "Приложение",
+    "arrangement": "Соглашение",
+    "contract offer": "Договор оферты",
+    "statute": "Устав",
+    "determination": "Решение",
+}
 
 @app.get("/form_params")
 async def read_json_file():
@@ -54,13 +67,13 @@ async def upload_files(files: list[UploadFile] = File(...), doctype: str = Form(
         total_status = True
         for filename, category in res_data.items():
             if category not in cats:
-                resp["files"][filename] = {"category": category, "valid_type": "Неожиданная категория"}
+                resp["files"][filename] = {"category": mapping[category], "valid_type": "Неожиданная категория"}
                 total_status = False
             elif cats[category] == 1:
-                resp["files"][filename] = {"category": category, "valid_type": "Правильный документ"}
+                resp["files"][filename] = {"category": mapping[category], "valid_type": "Правильный документ"}
                 cats[category] -= 1
             else:
-                resp["files"][filename] = {"category": category, "valid_type": "Лишний документ"}
+                resp["files"][filename] = {"category": mapping[category], "valid_type": "Лишний документ"}
                 total_status = False
 
         # resp : {'files': {'1.txt': {'category': 'application'}}}
@@ -85,22 +98,22 @@ async def handle_example(request: dict):
 
         res = {'files': {
             'soglasie.rtf':
-                {'category': 'agreement'},
+                {'category': mapping['arrangement']},
             'bill.rtf':
-                {'category': 'bill'},
+                {'category': mapping['bill']},
             'bill_another.rtf':
-                {'category': 'bill'}
+                {'category': mapping['bill']}
         },
             'status': 'bad'
         }
     elif name == "second":
         res = {'files': {
             'soglasie.rtf':
-                {'category': 'agreement'},
+                {'category': mapping['arrangement']},
             'bill.rtf':
-                {'category': 'bill'},
+                {'category': mapping['bill']},
             'order.rtf':
-                {'category': 'order'}
+                {'category': mapping['order']}
         },
             'status': 'ok'
         }
