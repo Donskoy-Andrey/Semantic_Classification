@@ -24,6 +24,7 @@ services:
       - ./semantic/frontend/src:/app/src
       - ./semantic/frontend/public:/app/public
       - ./semantic/frontend/.env.local:/app/.env.local
+
     command: >
         /bin/sh -c "npm start"
 
