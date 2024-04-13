@@ -27,7 +27,7 @@ app.add_middleware(
 @app.get("/form_params")
 async def read_json_file():
     try:
-        json_file_path = os.path.join(os.path.dirname(__file__), "../data.json")
+        json_file_path = os.path.join(os.path.dirname(__file__), "/app/data.json")
         with open(json_file_path, "r", encoding="utf-8") as file:
             data = json.load(file)
         return JSONResponse(content=data)
