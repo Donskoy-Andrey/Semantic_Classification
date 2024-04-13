@@ -30,6 +30,7 @@ striprtf = "^0.0.26"
 pypdf2 = "^3.0.1"
 pandas = "^2.2.2"
 docx2txt = "^0.8"
+openpyxl = "^3.1.2"
 
 [tool.poetry.dev-dependencies]
 pytest = "^8.1.1"

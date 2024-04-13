@@ -138,6 +138,14 @@ optional = false
 python-versions = "*"
 
 [[package]]
+name = "et-xmlfile"
+version = "1.1.0"
+description = "An implementation of lxml.xmlfile for the standard library"
+category = "main"
+optional = false
+python-versions = ">=3.6"
+
+[[package]]
 name = "exceptiongroup"
 version = "1.2.0"
 description = "Backport of PEP 654 (exception groups)"
@@ -567,6 +575,17 @@ description = "NVIDIA Tools Extension"
 category = "main"
 optional = false
 python-versions = ">=3"
+
+[[package]]
+name = "openpyxl"
+version = "3.1.2"
+description = "A Python library to read/write Excel 2010 xlsx/xlsm files"
+category = "main"
+optional = false
+python-versions = ">=3.6"
+
+[package.dependencies]
+et-xmlfile = "*"
 
 [[package]]
 name = "packaging"
@@ -1226,7 +1245,7 @@ pymorphy2 = "*"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.10"
-content-hash = "ec241ac625ae4d07d88b810988d79b935ade9f2469dc2f327b2a41ecaeea35ff"
+content-hash = "d1e8b94f96d896f934fe37165dcc95054b79a9908c81660b2989a45e2281ae27"
 
 [metadata.files]
 annotated-types = []
@@ -1242,6 +1261,7 @@ dawg-python = []
 dill = []
 docopt = []
 docx2txt = []
+et-xmlfile = []
 exceptiongroup = []
 fastapi = []
 filelock = []
@@ -1278,6 +1298,7 @@ nvidia-cusparse-cu12 = []
 nvidia-nccl-cu12 = []
 nvidia-nvjitlink-cu12 = []
 nvidia-nvtx-cu12 = []
+openpyxl = []
 packaging = []
 pandas = []
 pillow = []
