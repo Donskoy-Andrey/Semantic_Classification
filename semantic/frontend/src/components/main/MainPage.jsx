@@ -5,6 +5,8 @@ import TypeModal from "../modal/TypeModal";
 import FileUploader from "../file_uploader/FileUploader";
 import {TypesDropdown} from "../types_dropdown/TypesDropdown";
 import {Categories} from "../categories/Categories";
+import Tooltip from "react-bootstrap/Tooltip";
+import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 
 
 class MainPage extends React.Component {
@@ -57,6 +59,11 @@ class MainPage extends React.Component {
         this.setState({ isExampleModalOpen: false });
     }
     openTypeModal = () => {
+        const confirmation = prompt('Введите пароль:');
+        if (confirmation !== process.env.REACT_APP_PWD) {
+            alert("Неверный пароль!")
+            return
+        }
         this.setState({ isTypeModalOpen: true });
     }
 
@@ -130,10 +137,23 @@ class MainPage extends React.Component {
 
     render() {
         const {loading, isExampleModalOpen, responseData} = this.state;
+        const tooltipMargin = {
+            marginTop: '-10px', // Adjust the margin as needed
+        };
         return (
             <div className="main-page">
                 <div className="container mt-4 main-bg">
-                    <button onClick={this.openTypeModal}>type modal</button>
+                    <div className="main-header">
+                    <h3>Выберите тип документа:</h3>
+                        <OverlayTrigger
+                            overlay={<Tooltip style={tooltipMargin}>Добавить тип документа</Tooltip>}
+                        >
+                    <button
+                        className="btn btn-addtype"
+                        onClick={this.openTypeModal}
+                    >+</button>
+                        </OverlayTrigger>
+                    </div>
                     <TypesDropdown
                         onChange={this.onDocumentTypeChange}
                         currentDocType={this.state.currentDocType}

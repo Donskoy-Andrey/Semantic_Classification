@@ -35,14 +35,17 @@ function TypeModal({isOpen, onClose, onAccept}) {
                 <button className="modal-close" onClick={onClose}>x</button>
                 <div className="modal-form">
                     <input
+                        className="modal-input__text"
                         type="text"
                         placeholder="Введите название типа"
                         value={typeName}
                         onChange={(e) => setTypeName(e.target.value)}
                     />
+                    <div className="modal-input__checkbox-container">
                     {Object.entries(typeMapping).map(([type, label]) => (
-                        <div key={type}>
+                        <div key={type} className="modal-input__checkbox-item">
                             <input
+                                className="modal-input__checkbox custom-checkbox"
                                 type="checkbox"
                                 id={type}
                                 checked={types[type] || false}
@@ -51,7 +54,8 @@ function TypeModal({isOpen, onClose, onAccept}) {
                             <label htmlFor={type}>{label}</label>
                         </div>
                     ))}
-                    <button onClick={() => onAccept(typeName, Object.keys(types).filter(key => types[key]))}>
+                    </div>
+                    <button className="btn btn-secondary" onClick={() => onAccept(typeName, Object.keys(types).filter(key => types[key]))}>
                         Принять
                     </button>
                 </div>
