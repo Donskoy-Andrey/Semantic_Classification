@@ -62,7 +62,7 @@ async def upload_files(files: list[UploadFile] = File(...), doctype: str = Form(
 
             # Simulate processing asynchronously
             await simulate_processing()
-        resp["status"] = "ok"
+        resp["status"] = "bad"
         print(f"{resp=}")
 
         return JSONResponse(content=resp, status_code=200)

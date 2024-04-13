@@ -12,9 +12,11 @@ const FileUploader = (props) => {
     const docs_number = props.documentTypes[props.currentDocType].docs_number;
 
     const handleFileChange = (e) => {
+        console.log('supertest ', selectedFiles === e.target.files);
         setSelectedFiles([...selectedFiles, ...e.target.files]);
         console.log('selected files: ', e.target.files[0]);
     };
+
 
     const checkFiles = (files) => {
         if (!(files && files.length)) {
@@ -79,6 +81,7 @@ const FileUploader = (props) => {
                 console.error('Error uploading files:', response.statusText);
             }
             props.setFiles(selectedFiles);
+            setSelectedFiles([]);
         } catch (error) {
             console.error('Error uploading files:', error);
         } finally {
@@ -134,7 +137,8 @@ const FileUploader = (props) => {
                 <input
                     type="file"
                     multiple
-                    onChange={handleFileChange}
+                    onInput={handleFileChange}
+                    // onChange={handleFileChange}
                     ref={fileInputRef}
                     style={{display: 'none'}}
                 />

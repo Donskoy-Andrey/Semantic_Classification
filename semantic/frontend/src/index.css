@@ -157,13 +157,29 @@ html, body{
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 1px solid #f0f0f0;
+  border-top: 1px solid #f0f0f0;
 }
 
 .modal-buttons__name {
   flex: 1; /* This will make the name take up remaining space */
   text-align: left;
   color: black;
+  margin-bottom: 10px;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.modal-buttons__col{
+  display: flex;
+  flex-direction: column;
+  width: 70%;
+}
+
+.modal-buttons__specification, .modal-buttons__result{
+  color: black;
+  margin: 0;
+  font-size: 12px;
+
 }
 
 .modal-buttons__button {
@@ -359,3 +375,5 @@ option, select{
   align-items: center;
   padding: 0 15px;
 }
+
+
