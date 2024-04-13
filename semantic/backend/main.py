@@ -34,6 +34,7 @@ mapping = {
     "determination": "Решение",
 }
 
+
 @app.get("/form_params")
 async def read_json_file():
     try:
