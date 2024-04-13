@@ -7,20 +7,20 @@ import docx2txt
 
 class ParserFile:
     @staticmethod
-    async def read_txt(file):
-        contents = await file.read()
+    def read_txt(file):
+        contents = file.file.read()
         return contents.decode('utf-8')
 
     @staticmethod
-    async def read_rtf(file):
-        contents = await file.read()
+    def read_rtf(file):
+        contents = file.file.read()
         text_rtf = contents.decode('UTF-8')
         extracted_text = rtf_to_text(text_rtf)
         return extracted_text
 
     @staticmethod
-    async def read_pdf(file):
-        contents = await file.read()
+    def read_pdf(file):
+        contents = file.file.read()
         pdf_reader = PdfReader(io.BytesIO(contents))
         extracted_text = ''
         for page in pdf_reader.pages:
@@ -28,17 +28,16 @@ class ParserFile:
         return extracted_text
 
     @staticmethod
-    async def read_xlsx(file):
-        contents = await file.read()
+    def read_xlsx(file):
+        contents = file.file.read()
         extracted_text = pd.read_excel(
             io.BytesIO(contents)
         ).fillna(" ").to_string()
-
         return extracted_text
 
     @staticmethod
-    async def read_docx(file):
-        contents = await file.read()
+    def read_docx(file):
+        contents = file.file.read()
         extracted_text = docx2txt.process(
             io.BytesIO(contents)
         )

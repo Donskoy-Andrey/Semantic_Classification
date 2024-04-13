@@ -7,10 +7,12 @@ from fastapi.middleware.cors import CORSMiddleware
 from .model import SemanticModel
 from .parser_file import ParserFile
 
-model_ = SemanticModel()
-parser = ParserFile()
+
 
 app = FastAPI()
+
+model_ = SemanticModel()
+parser = ParserFile()
 
 app.add_middleware(
     CORSMiddleware,
@@ -52,78 +54,74 @@ async def upload_files(files: list[UploadFile] = File(...), doctype: str = Form(
     data = {'filename': [], 'text': []}
     try:
         for file in files:
-
             if file.filename.endswith(".txt"):
-                contents = await parser.read_txt(file)
+                contents = parser.read_txt(file)
 
                 data["filename"].append(file.filename)
                 data["text"].append(contents)
 
             if file.filename.endswith(".rtf"):
-                contents = await parser.read_rtf(file)
-
+                contents = parser.read_rtf(file)
                 data["filename"].append(file.filename)
                 data["text"].append(contents)
 
             if file.filename.endswith(".pdf"):
-                contents = await parser.read_pdf(file)
-
+                contents = parser.read_pdf(file)
                 data["filename"].append(file.filename)
                 data["text"].append(contents)
 
             if file.filename.endswith(".xlsx"):
-                contents = await parser.read_xlsx(file)
-
+                contents = parser.read_xlsx(file)
                 data["filename"].append(file.filename)
                 data["text"].append(contents)
 
             if file.filename.endswith(".docx"):
-                contents = await parser.read_docx(file)
-
+                print(file.filename)
+                contents = parser.read_docx(file)
+                print(file.filename)
                 data["filename"].append(file.filename)
                 data["text"].append(contents)
 
-        # Parse json
-        json_file_path = os.path.join(os.path.dirname(__file__), "/app/data.json")
-        with open(json_file_path, "r", encoding="utf-8") as file:
-            json_file = json.load(file)
-        cats = json_file[doctype]['categories']
-        cats = {cat: 1 for cat in cats}
+            # Parse json
+            json_file_path = os.path.join(os.path.dirname(__file__), "/app/data.json")
+            with open(json_file_path, "r", encoding="utf-8") as file:
+                json_file = json.load(file)
+            cats = json_file[doctype]['categories']
+            cats = {cat: 1 for cat in cats}
 
-        df_data = pd.DataFrame(data)
-        res_data = model_.predict(df_data)
+            df_data = pd.DataFrame(data)
+            res_data = model_.predict(df_data)
 
-        total_status = True
-        for filename, category in res_data.items():
-            if category not in cats:
-                resp["files"][filename] = {
-                    "category": mapping[category],
-                    "valid_type": f"Неожиданная категория, ожидалась категория из списка: {cats}",
-                }
-                total_status = False
-            elif cats[category] == 1:
-                resp["files"][filename] = {
-                    "category": mapping[category],
-                    "valid_type": "Правильный документ",
-                }
-                cats[category] -= 1
+            total_status = True
+            for filename, category in res_data.items():
+                if category not in cats:
+                    resp["files"][filename] = {
+                        "category": mapping[category],
+                        "valid_type": f"Неожиданная категория, ожидалась категория из списка: {cats}",
+                    }
+                    total_status = False
+                elif cats[category] == 1:
+                    resp["files"][filename] = {
+                        "category": mapping[category],
+                        "valid_type": "Правильный документ",
+                    }
+                    cats[category] -= 1
+                else:
+                    resp["files"][filename] = {
+                        "category": mapping[category],
+                        "valid_type": "Лишний документ",
+                    }
+                    total_status = False
+
+            # resp : {'files': {'1.txt': {'category': 'application'}}}
+
+            if total_status is True:
+                resp["status"] = "ok"
             else:
-                resp["files"][filename] = {
-                    "category": mapping[category],
-                    "valid_type": "Лишний документ",
-                }
-                total_status = False
+                resp["status"] = "bad"
 
-        # resp : {'files': {'1.txt': {'category': 'application'}}}
-
-        if total_status is True:
-            resp["status"] = "ok"
-        else:
-            resp["status"] = "bad"
-
-        return JSONResponse(content=resp, status_code=200)
+            return JSONResponse(content=resp, status_code=200)
     except Exception as e:
-        print(e)
         return JSONResponse(content={"message": "Failed to upload files", "error": str(e)}, status_code=500)
 
 

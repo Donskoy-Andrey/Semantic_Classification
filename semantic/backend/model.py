@@ -1,4 +1,6 @@
 import re
+from datetime import datetime
+
 import pandas as pd
 import joblib
 from natasha import (
@@ -16,6 +18,7 @@ from natasha import (
 
 
 class SemanticModel:
+
     mapping = {
         "proxy": "доверенность",
         "contract": "договор",
@@ -60,6 +63,7 @@ class SemanticModel:
 
     def __init__(self, **kwargs):
         self.status_error = None
+        print('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
 
     def _remove_entities(self, text: str) -> str:
         if not isinstance(text, str):
@@ -123,9 +127,11 @@ class SemanticModel:
     def _data_processing(self, text: str) -> str:
         if not isinstance(text, str):
             return self.status_error
+        print('5.5')
         text = self._remove_entities(text)
         text = self._clear_text(text)
         text = self._natasha_lemma(text)
+        print('5.6')
         return text
 
     def predict(self,
@@ -137,10 +143,14 @@ class SemanticModel:
         :param test_df: columns - [['filename', 'text']]. Should be processed!
 
         :return: list[class_]
+
         """
+        # print(f"{test_df['text'].values.tolist()=}")
         filenames = test_df['filename'].values.tolist()
         try:
+            print(datetime.now())
             test_df['text'] = test_df['text'].apply(self._data_processing)
+            print(datetime.now())
 
             top_words = [
                 "адрес", "акт", "бальмонт", "валюта", "весь", "выдать", "год", "город", "груз", "дата", "действовать",
