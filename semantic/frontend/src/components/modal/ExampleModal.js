@@ -1,7 +1,7 @@
 import React from 'react';
 
 
-function Modal({isOpen, onClose, onAccept}) {
+function ExampleModal({isOpen, onClose, onAccept}) {
     console.log(isOpen);
     if (!isOpen) return null;
 
@@ -10,7 +10,7 @@ function Modal({isOpen, onClose, onAccept}) {
             <div className="modal__content">
                 <h2> Примеры запросов</h2>
                 <br></br>
-                <button className="modal-close" onClick={onClose}>X</button>
+                <button className="modal-close" onClick={onClose}>x</button>
                 <div className="modal-buttons">
                     <div className="modal-buttons__row">
                         <div className="modal-buttons__col">
@@ -47,4 +47,4 @@ function Modal({isOpen, onClose, onAccept}) {
     );
 }
 
-export default Modal;
+export default ExampleModal;

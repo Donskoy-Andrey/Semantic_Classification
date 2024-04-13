@@ -1,6 +1,7 @@
 import React from 'react';
 import "./style.css";
-import Modal from "../modal/Modal";
+import ExampleModal from "../modal/ExampleModal";
+import TypeModal from "../modal/TypeModal";
 import FileUploader from "../file_uploader/FileUploader";
 import {TypesDropdown} from "../types_dropdown/TypesDropdown";
 import {Categories} from "../categories/Categories";
@@ -17,8 +18,8 @@ class MainPage extends React.Component {
             },
             imageURL: null,
             loading: false,
-            image: false,
-            isModalOpen: false,
+            isExampleModalOpen: false,
+            isTypeModalOpen: false,
             responseData: {}
         };
     }
@@ -46,14 +47,43 @@ class MainPage extends React.Component {
     }
 
 
-    openModal = () => {
+    openExampleModal = () => {
         console.log("Modal open");
-        this.setState({ isModalOpen: true });
+        this.setState({ isExampleModalOpen: true });
     }
 
-    closeModal = () => {
+    closeExampleModal = () => {
         console.log("Modal closed");
-        this.setState({ isModalOpen: false });
+        this.setState({ isExampleModalOpen: false });
+    }
+    openTypeModal = () => {
+        this.setState({ isTypeModalOpen: true });
+    }
+
+    onNewType = (typeName, categories) => {
+        fetch(`${process.env.REACT_APP_BACKEND}/update_template`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                name: typeName,
+                categories: categories
+            })
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log("init data: ", data);
+                // Handle the fetched data as needed
+            })
+            .catch(error => {
+                console.error('Error fetching data:', error);
+            });
+    };
+
+    closeTypeModal = () => {
+        console.log("Modal closed");
+        this.setState({ isTypeModalOpen: false });
     }
 
     setResponse = (data) => {
@@ -62,7 +92,7 @@ class MainPage extends React.Component {
 
     sendExample = async (name) => {
         console.log("Sending example");
-        this.setState({ isModalOpen: false });
+        this.setState({ isExampleModalOpen: false });
         console.log('name=', name);
 
         const requestData = { name: name };
@@ -96,17 +126,18 @@ class MainPage extends React.Component {
     };
 
     render() {
-        const {loading, image, imageURL, isModalOpen, responseData} = this.state;
+        const {loading, isExampleModalOpen, responseData} = this.state;
         return (
             <div className="main-page">
                 <div className="container mt-4 main-bg">
+                    <button onClick={this.openTypeModal}>type modal</button>
                     <TypesDropdown
                         onChange={this.onDocumentTypeChange}
                         currentDocType={this.state.currentDocType}
                         documentTypes={this.state.documentTypes}
                     />
                     <FileUploader
-                        openModal={this.openModal}
+                        openModal={this.openExampleModal}
                         setFiles={this.setFiles}
                         currentDocType={this.state.currentDocType}
                         documentTypes={this.state.documentTypes}
@@ -126,18 +157,19 @@ class MainPage extends React.Component {
                     {loading && (
                         <div className="big-center loader"></div>
                     )}
-                    {image && <div className="card mt-4">
-                        {imageURL && <img src={imageURL} className="card-img-top" alt="Uploaded" />}
-                    </div>}
                     <div>
-                        <Modal
-                            isOpen={isModalOpen}
-                            onClose={this.closeModal}
+                        <ExampleModal
+                            isOpen={isExampleModalOpen}
+                            onClose={this.closeExampleModal}
                             onAccept={this.sendExample}
                         >
                             <h2>Modal Content</h2>
                             <p>This is the content of the modal.</p>
-                        </Modal>
+                        </ExampleModal>
+                        <TypeModal
+                            isOpen={this.state.isTypeModalOpen}
+                            onClose={this.closeTypeModal}
+                        ></TypeModal>
                     </div>
                 </div>
             </div>
