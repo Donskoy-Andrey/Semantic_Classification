@@ -63,7 +63,6 @@ class SemanticModel:
 
     def __init__(self, **kwargs):
         self.status_error = None
-        print('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
 
     def _remove_entities(self, text: str) -> str:
         if not isinstance(text, str):
@@ -127,11 +126,9 @@ class SemanticModel:
     def _data_processing(self, text: str) -> str:
         if not isinstance(text, str):
             return self.status_error
-        print('5.5')
         text = self._remove_entities(text)
         text = self._clear_text(text)
         text = self._natasha_lemma(text)
-        print('5.6')
         return text
 
     def predict(self,
