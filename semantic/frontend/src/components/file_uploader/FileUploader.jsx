@@ -1,4 +1,6 @@
 import React, {useState, useRef} from 'react';
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
+import Popover from 'react-bootstrap/Popover';
 
 const FileUploader = (props) => {
     const allowedFormats = ['pdf', 'doc', 'docx', 'xlsx', 'txt', 'rtf'];
@@ -65,6 +67,7 @@ const FileUploader = (props) => {
         };
 
         try {
+            props.setResponse({});
             setLoading(true);
             const response = await fetch('http://localhost:8000/upload', config);
             if (response.ok) {
@@ -96,7 +99,23 @@ const FileUploader = (props) => {
         setSelectedFiles(updatedFiles);
     };
 
+    const renderPopover = (title, content) => (
+        <Popover>
+            <Popover.Header>{title}</Popover.Header>
+            <Popover.Body>{content}</Popover.Body>
+        </Popover>
+    );
+
+    const popoverContent = `Допустимые форматы: 
+    pdf, 
+    doc, 
+    docx, 
+    xlsx, 
+    txt, 
+    rtf`;
+
     return (
+
         <div>
             <div
                 onClick={handleClick}
@@ -129,7 +148,18 @@ const FileUploader = (props) => {
             {selectedFiles.length > 0 && (
                 selectedFiles.map((file, i) => (
                     <div className={`uploaded-file__item ${checkFileFormat(file)? "": "wrong"}`} key={i}>
-                        <span>{file.name}</span>
+
+                        {checkFileFormat(file) ? (
+                            <span>{file.name}</span>
+                        ) : (
+                            <OverlayTrigger
+                                trigger={['hover', 'focus']}
+                                placement="top"
+                                overlay={renderPopover('Неверный формат', popoverContent)}
+                            >
+                                <span>{file.name}</span>
+                            </OverlayTrigger>
+                        )}
                         <button className="btn uploaded-file__button" onClick={() =>deleteFile(i)}>X</button>
                     </div>
                 ))
