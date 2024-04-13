@@ -96,13 +96,22 @@ async def upload_files(files: list[UploadFile] = File(...), doctype: str = Form(
         total_status = True
         for filename, category in res_data.items():
             if category not in cats:
-                resp["files"][filename] = {"category": mapping[category], "valid_type": "Неожиданная категория"}
+                resp["files"][filename] = {
+                    "category": mapping[category],
+                    "valid_type": f"Неожиданная категория, ожидалась категория из списка: {cats}",
+                }
                 total_status = False
             elif cats[category] == 1:
-                resp["files"][filename] = {"category": mapping[category], "valid_type": "Правильный документ"}
+                resp["files"][filename] = {
+                    "category": mapping[category],
+                    "valid_type": "Правильный документ",
+                }
                 cats[category] -= 1
             else:
-                resp["files"][filename] = {"category": mapping[category], "valid_type": "Лишний документ"}
+                resp["files"][filename] = {
+                    "category": mapping[category],
+                    "valid_type": "Лишний документ",
+                }
                 total_status = False
 
         # resp : {'files': {'1.txt': {'category': 'application'}}}
