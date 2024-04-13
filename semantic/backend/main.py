@@ -1,7 +1,7 @@
 import os
 import json
 import pandas as pd
-from fastapi import FastAPI, File, UploadFile, Form, HTTPException
+from fastapi import FastAPI, File, UploadFile, Form, HTTPException, APIRouter
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 from .model import SemanticModel
@@ -13,6 +13,8 @@ app = FastAPI()
 
 model_ = SemanticModel()
 parser = ParserFile()
+
+app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
@@ -92,26 +94,27 @@ async def upload_files(files: list[UploadFile] = File(...), doctype: str = Form(
             df_data = pd.DataFrame(data)
             res_data = model_.predict(df_data)
 
-            total_status = True
-            for filename, category in res_data.items():
-                if category not in cats:
-                    resp["files"][filename] = {
-                        "category": mapping[category],
-                        "valid_type": f"Неожиданная категория, ожидалась категория из списка: {cats}",
-                    }
-                    total_status = False
-                elif cats[category] == 1:
-                    resp["files"][filename] = {
-                        "category": mapping[category],
-                        "valid_type": "Правильный документ",
-                    }
-                    cats[category] -= 1
-                else:
-                    resp["files"][filename] = {
-                        "category": mapping[category],
-                        "valid_type": "Лишний документ",
-                    }
-                    total_status = False
+        total_status = True
+        for filename, category in res_data.items():
+            if category not in cats:
+                resp["files"][filename] = {
+                    "category": mapping[category],
+                    "valid_type": f"Неожиданная категория, ожидалась категория из списка: "
+                                  f"[{', '.join([mapping[i] for i in cats.keys()])}]",
+                }
+                total_status = False
+            elif cats[category] == 1:
+                resp["files"][filename] = {
+                    "category": mapping[category],
+                    "valid_type": "Правильный документ",
+                }
+                cats[category] -= 1
+            else:
+                resp["files"][filename] = {
+                    "category": mapping[category],
+                    "valid_type": "Лишний документ",
+                }
+                total_status = False
 
             # resp : {'files': {'1.txt': {'category': 'application'}}}
 
@@ -122,6 +125,7 @@ async def upload_files(files: list[UploadFile] = File(...), doctype: str = Form(
 
         return JSONResponse(content=resp, status_code=200)
     except Exception as e:
+        print(e)
         return JSONResponse(content={"message": "Failed to upload files", "error": str(e)}, status_code=500)
 
 
@@ -134,22 +138,22 @@ async def handle_example(request: dict):
 
         res = {'files': {
             'soglasie.rtf':
-                {'category': mapping['arrangement']},
+                {'category': mapping['arrangement'], "valid_type": "Правильный документ"},
             'bill.rtf':
-                {'category': mapping['bill']},
+                {'category': mapping['bill'], "valid_type": "Правильный документ"},
             'bill_another.rtf':
-                {'category': mapping['bill']}
+                {'category': mapping['bill'], "valid_type": "Лишний документ"}
         },
             'status': 'bad'
         }
     elif name == "second":
         res = {'files': {
             'soglasie.rtf':
-                {'category': mapping['arrangement']},
+                {'category': mapping['arrangement'], "valid_type": "Правильный документ"},
             'bill.rtf':
-                {'category': mapping['bill']},
+                {'category': mapping['bill'], "valid_type": "Правильный документ"},
             'order.rtf':
-                {'category': mapping['order']}
+                {'category': mapping['order'], "valid_type": "Правильный документ"}
         },
             'status': 'ok'
         }
