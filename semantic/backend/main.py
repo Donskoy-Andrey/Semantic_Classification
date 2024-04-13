@@ -46,7 +46,8 @@ async def upload_files(files: list[UploadFile] = File(...), doctype: str = Form(
         print(f"{doctype=}")
         total_files = len(files)
         files_uploaded = 0
-        resp = {}
+        resp = {"files": {}}
+
         for file in files:
             contents = await file.read()
 
@@ -55,12 +56,13 @@ async def upload_files(files: list[UploadFile] = File(...), doctype: str = Form(
             # with open(file.filename, "wb") as f:
             #     f.write(contents)
             print(f"{file.filename=}")
-            resp[file.filename] = {"category": f"category_{files_uploaded}"}
+
+            resp["files"][file.filename] = {"category": f"category_{files_uploaded}"}
             files_uploaded += 1
 
             # Simulate processing asynchronously
             await simulate_processing()
-
+        resp["status"] = "ok"
         print(f"{resp=}")
 
         return JSONResponse(content=resp, status_code=200)

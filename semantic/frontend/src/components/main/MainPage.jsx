@@ -10,7 +10,6 @@ class MainPage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            files: [],
             currentDocType: "bank",
             documentTypes: {
                 "bank": "банк",
@@ -20,7 +19,6 @@ class MainPage extends React.Component {
             loading: false,
             image: false,
             isModalOpen: false,
-            visited: false,
             responseData: {}
         };
     }
@@ -100,9 +98,7 @@ class MainPage extends React.Component {
     };
 
     render() {
-        const { file, loading, image, imageURL, isModalOpen, visited, responseData} = this.state;
-        console.log('visited',visited);
-
+        const {loading, image, imageURL, isModalOpen, responseData} = this.state;
         return (
             <div className="main-page">
                 <div className="container mt-4 main-bg">
@@ -117,6 +113,7 @@ class MainPage extends React.Component {
                         currentDocType={this.state.currentDocType}
                         documentTypes={this.state.documentTypes}
                         setResponse={this.setResponse}
+                        responseData={responseData}
                     />
 
                     {
