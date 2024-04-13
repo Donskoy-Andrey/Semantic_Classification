@@ -3,6 +3,7 @@ import React, { useRef, useState } from 'react';
 const ZipUploadComponent = ({ docsNumber, openModal }) => {
     const fileInputRef = useRef(null);
     const [uploadedFile, setUploadedFile] = useState(null);
+    const [outputFile, setOutputFile] = useState(null);
 
     const handleClick = () => {
         fileInputRef.current.click();
@@ -18,7 +19,11 @@ const ZipUploadComponent = ({ docsNumber, openModal }) => {
         event.preventDefault();
     };
 
-    const handleFileChange = async (files) => {
+    const handleFileChange = (files) => {
+        setUploadedFile(files[0]);
+    }
+
+    const handleUpload = async (files) => {
         const formData = new FormData();
         formData.append('file', files[0]); // Assuming only one file is selected
 
@@ -32,7 +37,7 @@ const ZipUploadComponent = ({ docsNumber, openModal }) => {
                 throw new Error('Failed to upload file');
             }
             const data = await response.json(); // Assuming the server returns JSON data
-            setUploadedFile(data); // Assuming response.data contains the uploaded file information
+            setOutputFile(data); // Assuming response.data contains the uploaded file information
         } catch (error) {
             console.error('Error uploading file:', error);
         }
@@ -42,9 +47,9 @@ const ZipUploadComponent = ({ docsNumber, openModal }) => {
         // Implement download logic here
     };
 
-    const handleUpload = () => {
-        // Implement upload logic here
-    };
+    // const handleUpload = () => {
+    //     // Implement upload logic here
+    // };
 
     return (
         <div className="main-page">
@@ -71,16 +76,16 @@ const ZipUploadComponent = ({ docsNumber, openModal }) => {
                 </div>
 
                 <div className="input-control__buttons">
-                    {uploadedFile && (
+                    <button className="btn btn-primary" onClick={handleUpload}>
+                        Отправить
+                    </button>
+                    {outputFile && (
                         <div>
                             <button className="btn btn-primary" onClick={handleDownload}>
                                 Скачать
                             </button>
                         </div>
                     )}
-                    <button className="btn btn-primary" onClick={handleUpload}>
-                        Отправить
-                    </button>
                 </div>
             </div>
         </div>
