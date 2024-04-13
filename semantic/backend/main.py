@@ -1,4 +1,3 @@
-import io
 import json
 import os
 import pandas as pd
@@ -7,14 +6,12 @@ from fastapi import FastAPI, File, UploadFile, Form, HTTPException
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 import asyncio
-from striprtf.striprtf import rtf_to_text
-
-from PyPDF2 import PdfReader
 
 from .model import SemanticModel
-
+from .parser_file import ParserFile
 
 model_ = SemanticModel()
+parser = ParserFile()
 
 app = FastAPI()
 
@@ -47,27 +44,34 @@ async def upload_files(files: list[UploadFile] = File(...), doctype: str = Form(
         for file in files:
 
             if file.filename.endswith(".txt"):
-                contents = await file.read()
+                contents = await parser.read_txt(file)
+
                 data["filename"].append(file.filename)
-                data["text"].append(contents.decode("utf-8"))
+                data["text"].append(contents)
 
             if file.filename.endswith(".rtf"):
-                contents = await file.read()
-                text_rtf = contents.decode('UTF-8')
-                extracted_text = rtf_to_text(text_rtf)
+                contents = await parser.read_rtf(file)
+
                 data["filename"].append(file.filename)
-                data["text"].append(extracted_text)
+                data["text"].append(contents)
 
             if file.filename.endswith(".pdf"):
-                contents = await file.read()
-                pdf_reader = PdfReader(io.BytesIO(contents))
-                extracted_text = ''
-                for page in pdf_reader.pages:
-                    extracted_text += page.extract_text()
+                contents = await parser.read_pdf(file)
 
                 data["filename"].append(file.filename)
-                data["text"].append(extracted_text)
+                data["text"].append(contents)
 
+            if file.filename.endswith(".xlsx"):
+                contents = await parser.read_xlsx(file)
+
+                data["filename"].append(file.filename)
+                data["text"].append(contents)
+
+            if file.filename.endswith(".docx"):
+                contents = await parser.read_xlsx(file)
+
+                data["filename"].append(file.filename)
+                data["text"].append(contents)
 
         df_data = pd.DataFrame(data)
         res_data = model_.predict(df_data)
