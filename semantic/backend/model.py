@@ -128,9 +128,7 @@ class SemanticModel:
         text = self._natasha_lemma(text)
         return text
 
-    def predict(self,
-                test_df: pd.DataFrame,
-                ) -> dict:
+    def predict(self, test_df: pd.DataFrame) -> dict:
         """
         Inference
 
