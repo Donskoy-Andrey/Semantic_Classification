@@ -1,7 +1,7 @@
 import os
 import json
 import pandas as pd
-from fastapi import FastAPI, File, UploadFile, Form, HTTPException
+from fastapi import FastAPI, File, UploadFile, Form, HTTPException, APIRouter
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 from .model import SemanticModel
@@ -11,6 +11,7 @@ model_ = SemanticModel()
 parser = ParserFile()
 
 app = FastAPI()
+
 
 app.add_middleware(
     CORSMiddleware,

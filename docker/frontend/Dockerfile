@@ -4,4 +4,6 @@ WORKDIR /app
 
 COPY ./semantic/frontend/package*.json ./
 
+COPY ./semantic/frontend/.env.local /app/.env.local
+
 RUN npm install
