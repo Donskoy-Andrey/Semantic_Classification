@@ -205,6 +205,7 @@ html, body{
   }
 }
 
+
 /* HTML: <div class="loader"></div> */
 .loader {
   width: 200px;
@@ -282,6 +283,10 @@ html, body{
   flex-wrap: wrap;
 }
 
+.uploaded-file__filename{
+
+}
+
 .uploaded-file__item{
   margin: 10px 10px 0 0;
   position: relative;
@@ -308,8 +313,6 @@ html, body{
   padding-left: 0;
   padding-right: 0;
   margin-left: 10px;
-  font-size: 20px;
-  background-color: transparent;
 }
 
 .fa-big{
@@ -381,5 +384,3 @@ option, select{
 code{
   color: #dde0e3;
 }
-
-

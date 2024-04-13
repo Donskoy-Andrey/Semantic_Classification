@@ -1,5 +1,4 @@
 import React from 'react';
-import ali_png from "../../img/ali.png"
 
 
 function Modal({isOpen, onClose, onAccept}) {

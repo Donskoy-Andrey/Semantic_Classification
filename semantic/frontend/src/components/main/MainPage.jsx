@@ -24,7 +24,7 @@ class MainPage extends React.Component {
     }
 
     componentDidMount() {
-        fetch('http://localhost:8000/form_params')
+        fetch(`${process.env.REACT_APP_BACKEND_URL}/form_params`)
             .then(response => response.json())
             .then(data => {
                 console.log("init data: ", data)
@@ -69,7 +69,7 @@ class MainPage extends React.Component {
         this.setState({ loading: true });
         console.log(requestData);
         try {
-            const response = await fetch('http://localhost:8000/handle_example', {
+            const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/handle_example`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json' // Specify content type as JSON

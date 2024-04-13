@@ -1,11 +1,9 @@
 import React, {useState, useRef} from 'react';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Popover from 'react-bootstrap/Popover';
-import {Categories} from "../categories/Categories";
 
 const FileUploader = (props) => {
     const allowedFormats = ['pdf', 'doc', 'docx', 'xlsx', 'txt', 'rtf'];
-    const [formValid, setFormValid] = useState(false);
     const [selectedFiles, setSelectedFiles] = useState([]);
     const [loading, setLoading] = useState(false);
     const fileInputRef = useRef(null);
@@ -32,12 +30,10 @@ const FileUploader = (props) => {
         for (let i = 0; i < files.length; i++) {
             const extension = files[i].name.split('.').pop().toLowerCase();
             if (!allowedFormats.includes(extension)) {
-                setFormValid(false);
                 alert("Неверный формат файла")
                 return false;
             }
         }
-        setFormValid(true);
         return true;
     }
 
@@ -72,7 +68,7 @@ const FileUploader = (props) => {
         try {
             props.setResponse({});
             setLoading(true);
-            const response = await fetch('http://localhost:8000/upload', config);
+            const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/upload`, config);
             if (response.ok) {
                 const data = await response.json(); // Await the response.json() promise
                 props.setResponse(data);
@@ -122,6 +118,7 @@ const FileUploader = (props) => {
 
     return (
 
+
         <div>
             <div
                 onClick={handleClick}
@@ -147,7 +144,7 @@ const FileUploader = (props) => {
 
             <div className="input-control__buttons">
                 <button className="btn btn-primary" onClick={handleUpload}>Отправить</button>
-                <button className="btn btn-success modal-button" onClick={props.openModal}>Примеры запросов</button>
+                <button className="btn btn-success modal-button" onClick={props.openModal}>Примеры</button>
             </div>
             {loading && (
                 <div className="big-center loader"></div>
@@ -157,7 +154,7 @@ const FileUploader = (props) => {
                     selectedFiles.map((file, i) => (
                         <div className={`uploaded-file__item ${checkFileFormat(file) ? "" : "wrong"}`} key={i}>
                             {checkFileFormat(file) ? (
-                                <span>{file.name.length > 15 ? `${file.name.substring(0, 5)}...${file.name.substring(file.name.length - 10)}` : file.name}</span>
+                                <span className="uploaded-file__filename">{file.name.length > 15 ? `${file.name.substring(0, 5)}...${file.name.substring(file.name.length - 10)}` : file.name}</span>
                             ) : (
                                 <OverlayTrigger
                                     trigger={['hover', 'focus']}
@@ -167,7 +164,7 @@ const FileUploader = (props) => {
                                     <span>{file.name}</span>
                                 </OverlayTrigger>
                             )}
-                            <button className="btn uploaded-file__button" onClick={() => deleteFile(i)}>X</button>
+                            <button className="btn btn-close-white uploaded-file__button" onClick={() => deleteFile(i)}>x</button>
                         </div>
                     ))
                 )}
