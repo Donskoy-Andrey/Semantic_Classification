@@ -6,7 +6,6 @@ from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 import asyncio
 
-
 app = FastAPI()
 
 # Allow requests from localhost:3000
@@ -23,9 +22,45 @@ async def simulate_processing():
     # Simulate processing by waiting for 1 second
     await asyncio.sleep(1)
 
+
 @app.get("/")
 async def main():
     return JSONResponse({"message": "hello world"})
+
+
+@app.post("/handle_example")
+async def handle_example(request: dict):
+    if "name" not in request:
+        return JSONResponse(content={"message": "Failed to upload files", "error": "wrong format"}, status_code=500)
+    name = request["name"]
+    if name == "first":
+
+        res = {'files': {
+            'soglasie.rtf':
+                {'category': 'agreement'},
+            'bill.rtf':
+                {'category': 'bill'},
+            'bill_another.rtf':
+                {'category': 'bill'}
+        },
+            'status': 'bad'
+        }
+    elif name == "second":
+        res = {'files': {
+            'soglasie.rtf':
+                {'category': 'agreement'},
+            'bill.rtf':
+                {'category': 'bill'},
+            'order.rtf':
+                {'category': 'order'}
+        },
+            'status': 'ok'
+        }
+    else:
+        return JSONResponse(content={"message": "Failed to upload files", "error": "wrong format"}, status_code=500)
+
+    return JSONResponse(content=res, status_code=200)
+
 
 
 @app.get("/form_params")

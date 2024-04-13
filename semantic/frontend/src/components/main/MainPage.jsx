@@ -60,12 +60,12 @@ class MainPage extends React.Component {
         this.setState({responseData: data})
     }
 
-    sendExample = async (event, name) => {
+    sendExample = async (name) => {
         console.log("Sending example");
         this.setState({ isModalOpen: false });
         console.log('name=', name);
 
-        const requestData = { name: "first" };
+        const requestData = { name: name };
         this.setState({ loading: true });
         console.log(requestData);
         try {
@@ -81,10 +81,8 @@ class MainPage extends React.Component {
                 throw new Error('Failed to upload file');
             }
 
-            const data = await response.blob();
-            const url = URL.createObjectURL(data);
-            this.setState({ imageURL: url, image: true });
-            console.log('Image URL:', url);
+            const data = await response.json();
+            this.setState({ responseData: data });
         } catch (error) {
             console.error('Error:', error.message);
         } finally {
@@ -132,7 +130,11 @@ class MainPage extends React.Component {
                         {imageURL && <img src={imageURL} className="card-img-top" alt="Uploaded" />}
                     </div>}
                     <div>
-                        <Modal isOpen={isModalOpen} onClose={this.closeModal} onAccept={this.sendExample}>
+                        <Modal
+                            isOpen={isModalOpen}
+                            onClose={this.closeModal}
+                            onAccept={this.sendExample}
+                        >
                             <h2>Modal Content</h2>
                             <p>This is the content of the modal.</p>
                         </Modal>
