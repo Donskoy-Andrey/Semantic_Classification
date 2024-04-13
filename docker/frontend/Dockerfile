@@ -5,9 +5,3 @@ WORKDIR /app
 COPY ../../semantic/frontend/package*.json ./
 
 RUN npm install
-
-COPY ../../semantic/frontend .
-
-EXPOSE 3000
-
-CMD ["npm", "start"]
