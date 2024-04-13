@@ -1,9 +1,12 @@
 import React from 'react';
 import "./style.css";
-import Modal from "../modal/Modal";
+import ExampleModal from "../modal/ExampleModal";
+import TypeModal from "../modal/TypeModal";
 import FileUploader from "../file_uploader/FileUploader";
 import {TypesDropdown} from "../types_dropdown/TypesDropdown";
 import {Categories} from "../categories/Categories";
+import Tooltip from "react-bootstrap/Tooltip";
+import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 
 
 class MainPage extends React.Component {
@@ -17,24 +20,30 @@ class MainPage extends React.Component {
             },
             imageURL: null,
             loading: false,
-            image: false,
-            isModalOpen: false,
+            isExampleModalOpen: false,
+            isTypeModalOpen: false,
             responseData: {}
         };
     }
 
     componentDidMount() {
         fetch(`${process.env.REACT_APP_BACKEND}/form_params`)
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Server error');
+                }
+                return response.json();
+            })
             .then(data => {
-                console.log("init data: ", data)
-                this.setState({documentTypes: data}); // Set the fetched data to state
+                console.log("init data: ", data);
+                this.setState({ documentTypes: data }); // Set the fetched data to state
             })
             .catch(error => {
                 console.error('Error fetching data:', error);
+                alert('Сервер не отвечает'); // Display alert for status 500 error
             });
-
     }
+
 
     setFiles = (files) => {
         this.setState({ files: files });
@@ -46,14 +55,60 @@ class MainPage extends React.Component {
     }
 
 
-    openModal = () => {
+    openExampleModal = () => {
         console.log("Modal open");
-        this.setState({ isModalOpen: true });
+        this.setState({ isExampleModalOpen: true });
     }
 
-    closeModal = () => {
+    closeExampleModal = () => {
         console.log("Modal closed");
-        this.setState({ isModalOpen: false });
+        this.setState({ isExampleModalOpen: false });
+    }
+    openTypeModal = () => {
+        this.setState({ isTypeModalOpen: true });
+    }
+
+
+    onNewType = (typeName, categories) => {
+        console.log("onNewType", typeName, categories);
+        fetch(`${process.env.REACT_APP_BACKEND}/update_template`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                name: typeName,
+                categories: categories
+            })
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.status === "Success") {
+                    console.log("init data: ", data);
+                    this.setState({documentTypes: data}); // Set the fetched data to state
+                } else {
+                    alert(data.detail.error); // Alert the error message received from the backend
+                }
+                // Handle the fetched data as needed
+            })
+            .catch(error => {
+                console.error('Error fetching data artmed:', error.detail);
+                alert('Error fetching data. Please try again later.');
+            })
+            .finally(() => {
+                this.closeTypeModal(); // Close the modal regardless of success or failure
+            });
+    };
+
+
+    closeTypeModal = () => {
+        console.log("Modal closed");
+        this.setState({ isTypeModalOpen: false });
     }
 
     setResponse = (data) => {
@@ -62,7 +117,7 @@ class MainPage extends React.Component {
 
     sendExample = async (name) => {
         console.log("Sending example");
-        this.setState({ isModalOpen: false });
+        this.setState({ isExampleModalOpen: false });
         console.log('name=', name);
 
         const requestData = { name: name };
@@ -84,7 +139,7 @@ class MainPage extends React.Component {
             const data = await response.json();
             this.setState({ responseData: data });
         } catch (error) {
-            console.error('Error:', error.message);
+            alert("Что-то пошло не так, попробуйте заново");
         } finally {
             this.setState({ loading: false });
         }
@@ -96,17 +151,32 @@ class MainPage extends React.Component {
     };
 
     render() {
-        const {loading, image, imageURL, isModalOpen, responseData} = this.state;
+        const {loading, isExampleModalOpen, responseData} = this.state;
+        const tooltipMargin = {
+            marginTop: '-10px', // Adjust the margin as needed
+        };
         return (
             <div className="main-page">
                 <div className="container mt-4 main-bg">
+                    <div className="main-header">
+                        <h3>Выберите тип документа:</h3>
+                        <OverlayTrigger
+                            overlay={<Tooltip style={tooltipMargin}>Добавить тип документа</Tooltip>}
+                        >
+                            <button
+                                className="btn btn-addtype"
+                                onClick={this.openTypeModal}
+                            >+
+                            </button>
+                        </OverlayTrigger>
+                    </div>
                     <TypesDropdown
                         onChange={this.onDocumentTypeChange}
                         currentDocType={this.state.currentDocType}
                         documentTypes={this.state.documentTypes}
                     />
                     <FileUploader
-                        openModal={this.openModal}
+                        openModal={this.openExampleModal}
                         setFiles={this.setFiles}
                         currentDocType={this.state.currentDocType}
                         documentTypes={this.state.documentTypes}
@@ -126,18 +196,20 @@ class MainPage extends React.Component {
                     {loading && (
                         <div className="big-center loader"></div>
                     )}
-                    {image && <div className="card mt-4">
-                        {imageURL && <img src={imageURL} className="card-img-top" alt="Uploaded" />}
-                    </div>}
                     <div>
-                        <Modal
-                            isOpen={isModalOpen}
-                            onClose={this.closeModal}
+                        <ExampleModal
+                            isOpen={isExampleModalOpen}
+                            onClose={this.closeExampleModal}
                             onAccept={this.sendExample}
                         >
                             <h2>Modal Content</h2>
                             <p>This is the content of the modal.</p>
-                        </Modal>
+                        </ExampleModal>
+                        <TypeModal
+                            isOpen={this.state.isTypeModalOpen}
+                            onClose={this.closeTypeModal}
+                            onAccept={this.onNewType}
+                        ></TypeModal>
                     </div>
                 </div>
             </div>

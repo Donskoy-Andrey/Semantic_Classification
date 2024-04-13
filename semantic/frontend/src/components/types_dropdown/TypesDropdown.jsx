@@ -10,7 +10,6 @@ export const TypesDropdown = (props) => {
 
     return (
         <div className="">
-            <h3>Выберите тип документа:</h3>
             <select
                 className="form-select form-select-lg mb-3"
                 name={"select"}
