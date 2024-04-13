@@ -1,6 +1,7 @@
 import os
 import json
 import pandas as pd
+import zipfile
 from fastapi import FastAPI, File, UploadFile, Form, HTTPException
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
@@ -198,3 +199,14 @@ async def handle_example(request: dict):
         return JSONResponse(content={"message": "Failed to upload files", "error": "wrong format"}, status_code=500)
 
     return JSONResponse(content=res, status_code=200)
+
+
+app.post("/upload_zip")
+def handle_upload_zip(file: UploadFile = File(...)):
+    # with ZipFile(os.path.splitext(file.filename)[0] + "_processed" +
+    #              os.path.splitext(file.filename)[1], "x") as result_zip_file:
+    with ZipFile(file, 'r') as raw_zip_file:
+        print(raw_zip_file.infolist())
+
+
+
