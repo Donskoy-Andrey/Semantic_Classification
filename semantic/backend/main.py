@@ -1,3 +1,4 @@
+import io
 import json
 import os
 import pandas as pd
@@ -6,8 +7,12 @@ from fastapi import FastAPI, File, UploadFile, Form, HTTPException
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 import asyncio
+from striprtf.striprtf import rtf_to_text
+
+from PyPDF2 import PdfReader
 
 from .model import SemanticModel
+
 
 model_ = SemanticModel()
 
@@ -23,7 +28,6 @@ app.add_middleware(
 )
 
 
-
 @app.get("/form_params")
 async def read_json_file():
     try:
@@ -37,14 +41,33 @@ async def read_json_file():
 
 @app.post("/upload")
 async def upload_files(files: list[UploadFile] = File(...), doctype: str = Form(...)):
+    resp = {"files": {}}
+    data = {'filename': [], 'text': []}
     try:
-        resp = {"files": {}}
-        data = {'filename': [], 'text': []}
         for file in files:
-            if file.filename.split(".")[-1] == "txt":
+
+            if file.filename.endswith(".txt"):
                 contents = await file.read()
                 data["filename"].append(file.filename)
                 data["text"].append(contents.decode("utf-8"))
+
+            if file.filename.endswith(".rtf"):
+                contents = await file.read()
+                text_rtf = contents.decode('UTF-8')
+                extracted_text = rtf_to_text(text_rtf)
+                data["filename"].append(file.filename)
+                data["text"].append(extracted_text)
+
+            if file.filename.endswith(".pdf"):
+                contents = await file.read()
+                pdf_reader = PdfReader(io.BytesIO(contents))
+                extracted_text = ''
+                for page in pdf_reader.pages:
+                    extracted_text += page.extract_text()
+
+                data["filename"].append(file.filename)
+                data["text"].append(extracted_text)
+
 
         df_data = pd.DataFrame(data)
         res_data = model_.predict(df_data)

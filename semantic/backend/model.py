@@ -65,7 +65,7 @@ class SemanticModel:
         if not isinstance(text, str):
             return self.status_error
 
-        text = re.sub(r'[^а-яА-Яa-zA-Z\s<]', '', text)
+        text = re.sub(r'[^а-яА-Яa\s<]', '', text)
         text = re.sub(r'\.\.+', '', text)
         text = re.sub(r'\s+', ' ', text)
 
