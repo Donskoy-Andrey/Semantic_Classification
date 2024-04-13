@@ -112,15 +112,16 @@ const FileUploader = (props) => {
         </Popover>
     );
 
-    const popoverContent = `Допустимые форматы:
-    pdf,
-    doc,
-    docx,
-    xlsx,
-    txt,
+    const popoverContent = `Допустимые форматы: 
+    pdf, 
+    doc, 
+    docx, 
+    xlsx, 
+    txt, 
     rtf`;
 
     return (
+
         <div>
             <div
                 onClick={handleClick}
