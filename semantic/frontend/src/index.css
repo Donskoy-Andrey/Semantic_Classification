@@ -331,9 +331,6 @@ html, body{
   width: 50%;
 }
 
-option, select{
-  text-transform: capitalize;
-}
 
 .status{
   display: block;
