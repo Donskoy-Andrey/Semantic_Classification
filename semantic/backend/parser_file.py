@@ -33,6 +33,7 @@ class ParserFile:
         extracted_text = pd.read_excel(
             io.BytesIO(contents)
         ).fillna(" ").to_string()
+        # print(extracted_text)
         return extracted_text
 
     @staticmethod
@@ -41,4 +42,5 @@ class ParserFile:
         extracted_text = docx2txt.process(
             io.BytesIO(contents)
         )
+
         return extracted_text

@@ -1,9 +1,14 @@
 import os
 import json
 import pandas as pd
+import io
+import zipfile
 from fastapi import FastAPI, File, UploadFile, Form, HTTPException, APIRouter
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
+
+
+
 from .model import SemanticModel
 from .parser_file import ParserFile
 
@@ -13,8 +18,6 @@ app = FastAPI()
 
 model_ = SemanticModel()
 parser = ParserFile()
-
-app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
@@ -36,6 +39,7 @@ mapping = {
     "contract offer": "Договор оферты",
     "statute": "Устав",
     "determination": "Решение",
+    "no_class": "Невалидный файл"
 }
 
 
@@ -73,14 +77,13 @@ async def upload_files(files: list[UploadFile] = File(...), doctype: str = Form(
                 data["text"].append(contents)
 
             if file.filename.endswith(".xlsx"):
+                print(file.filename)
                 contents = parser.read_xlsx(file)
                 data["filename"].append(file.filename)
                 data["text"].append(contents)
 
             if file.filename.endswith(".docx"):
-                print(file.filename)
                 contents = parser.read_docx(file)
-                print(file.filename)
                 data["filename"].append(file.filename)
                 data["text"].append(contents)
 
@@ -93,6 +96,7 @@ async def upload_files(files: list[UploadFile] = File(...), doctype: str = Form(
 
             df_data = pd.DataFrame(data)
             res_data = model_.predict(df_data)
+            print(f'{res_data}')
 
         total_status = True
         for filename, category in res_data.items():
