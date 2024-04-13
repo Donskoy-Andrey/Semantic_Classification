@@ -2,7 +2,7 @@
   "bank": {
     "name": "Банк (открытие ИП) — 3 файла",
     "docs_number": 3,
-    "categories": ["application", "determination", "invoice"]
+    "categories": ["application", "order", "arrangement"]
   },
   "zags": {
     "name": "Заявление в ЗАГС — 1 файл",

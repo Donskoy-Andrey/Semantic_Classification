@@ -346,9 +346,11 @@ html, body{
 }
 .ok{
   background-color: green;
+  text-transform: none;
 }
 .bad{
   background-color: red;
+  text-transform: none;
 }
 
 .response-file__container{
@@ -380,4 +382,16 @@ html, body{
 
 code{
   color: #dde0e3;
+}
+
+.bg-red{
+  background-color: red;
+}
+
+.bg-green{
+  background-color: green;
+}
+
+.bg-yellow{
+  background-color: yellow;
 }
