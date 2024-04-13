@@ -2,7 +2,7 @@ import React from 'react';
 
 
 function ExampleModal({isOpen, onClose, onAccept}) {
-    console.log(isOpen);
+    // console.log(isOpen);
     if (!isOpen) return null;
 
     return (
