@@ -139,7 +139,7 @@ class MainPage extends React.Component {
             const data = await response.json();
             this.setState({ responseData: data });
         } catch (error) {
-            console.error('Error:', error.message);
+            alert("Что-то пошло не так, попробуйте заново");
         } finally {
             this.setState({ loading: false });
         }
