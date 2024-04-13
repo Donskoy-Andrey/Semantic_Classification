@@ -11,7 +11,7 @@ from natasha import (
     NamesExtractor,
     DatesExtractor,
     AddrExtractor,
-    NewsNERTagger
+    NewsNERTagger,
 )
 
 
@@ -105,8 +105,6 @@ class SemanticModel:
         for key, value in self.replace_words.items():
             text = re.sub(value, key, text)
 
-        # text = re.sub(r'[^;:\?!,\.\-а-яА-Яa-zA-Z\s<]', '', text)
-
         text = ' '.join([word for word in text.split() if len(word) > 2])
         text = re.sub(r'\s+', ' ', text)
         text = re.sub(r'[^\w\s]', '', text)
@@ -162,21 +160,3 @@ class SemanticModel:
         except Exception as e:
             preds = dict(zip(filenames, [None for _ in filenames]))
         return preds
-
-
-if __name__ == '__main__':
-    test_text = (
-        "Директору ООО «Кошкин дом» Денисову Олегу Викторовичу \n "
-        "От оператора горячей линии Бальмонт Сергея Валерьевича \n "
-        "Заявление о переводе на полную ставку\n "
-        "По условиям трудового договора от 01.03.2025 г. "
-        "я работаю на 0.5 ставки, по 4 часа в день. В связи с "
-        "появлением большого количества рабочего времени, "
-        "прошу с 01.10.2025 г. перевести меня на полную ставку.28 сентября 2025 г. "
-        "Бальмонт Сергей Валерьевич  "
-    )
-
-    sem_model = SemanticModel()
-    test_df = pd.DataFrame({'text': [test_text]})
-    test_df['text'] = test_df['text'].apply(data_processing)
-    sem_model.predict(test_df)
