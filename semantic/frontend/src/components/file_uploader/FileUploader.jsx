@@ -74,7 +74,7 @@ const FileUploader = (props) => {
                 props.setResponse(data);
                 setSelectedFiles([]);
             } else {
-                console.error('Error uploading files:', response.statusText, response.message);
+                console.error('Error uploading files:', response.statusText, response.error, response.message, response.content);
             }
             props.setFiles(selectedFiles);
             setSelectedFiles([]);

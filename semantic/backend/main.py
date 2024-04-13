@@ -45,13 +45,36 @@ async def read_json_file():
     except FileNotFoundError:
         raise HTTPException(status_code=404, detail="File not found")
 
+@app.post("/update_template")
+async def update_template(request: dict):
+    try:
+        json_file_path = os.path.join(os.path.dirname(__file__), "app/data.json")
+        with open(json_file_path, "r", encoding="utf-8") as file:
+            data = json.load(file)
+
+        new_key = 'test_update'
+        new_value = {
+            'name': request['name'],
+            'categories': request['categories'],
+            'docs_number': len(request['categories'])
+        }
+        data[new_key] = new_value
+        with open(json_file_path, "w", encoding="utf-8") as file:
+            json.dump(data, file)
+        return JSONResponse(content=data, status_code=200)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail={'error': str(e)})
+
+
 
 @app.post("/upload")
 async def upload_files(files: list[UploadFile] = File(...), doctype: str = Form(...)):
     resp = {"files": {}}
     data = {'filename': [], 'text': []}
+    print('1')
     try:
         for file in files:
+            print(file.filename)
 
             if file.filename.endswith(".txt"):
                 contents = await parser.read_txt(file)
@@ -89,9 +112,11 @@ async def upload_files(files: list[UploadFile] = File(...), doctype: str = Form(
             json_file = json.load(file)
         cats = json_file[doctype]['categories']
         cats = {cat: 1 for cat in cats}
+        print('6')
 
         df_data = pd.DataFrame(data)
         res_data = model_.predict(df_data)
+        print('7')
 
         total_status = True
         for filename, category in res_data.items():
@@ -116,6 +141,7 @@ async def upload_files(files: list[UploadFile] = File(...), doctype: str = Form(
                 total_status = False
 
         # resp : {'files': {'1.txt': {'category': 'application'}}}
+        print('8')
 
         if total_status is True:
             resp["status"] = "ok"

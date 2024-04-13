@@ -14,7 +14,7 @@ const typeMapping = {
     "determination": "Решение",
 };
 
-function TypeModal({isOpen, onClose}) {
+function TypeModal({isOpen, onClose, onAccept}) {
     const [typeName, setTypeName] = React.useState('');
     const [types, setTypes] = React.useState({});
     if (!isOpen) return null;

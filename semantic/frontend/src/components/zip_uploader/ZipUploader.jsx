@@ -29,7 +29,7 @@ const ZipUploadComponent = ({ docsNumber, openModal }) => {
 
         try {
             console.log("response")
-            const response = await fetch(`${process.env.REACT_APP_BACKEND}/upload`, {
+            const response = await fetch(`${process.env.REACT_APP_BACKEND}/upload_zip`, {
                 method: 'POST',
                 body: formData,
             });

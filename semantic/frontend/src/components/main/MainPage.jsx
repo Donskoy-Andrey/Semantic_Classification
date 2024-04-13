@@ -61,6 +61,7 @@ class MainPage extends React.Component {
     }
 
     onNewType = (typeName, categories) => {
+        console.log("onNewType", typeName, categories);
         fetch(`${process.env.REACT_APP_BACKEND}/update_template`, {
             method: 'POST',
             headers: {
@@ -74,11 +75,13 @@ class MainPage extends React.Component {
             .then(response => response.json())
             .then(data => {
                 console.log("init data: ", data);
+                this.setState({documentTypes: data}); // Set the fetched data to state
                 // Handle the fetched data as needed
             })
             .catch(error => {
                 console.error('Error fetching data:', error);
             });
+        this.closeTypeModal();
     };
 
     closeTypeModal = () => {
@@ -169,6 +172,7 @@ class MainPage extends React.Component {
                         <TypeModal
                             isOpen={this.state.isTypeModalOpen}
                             onClose={this.closeTypeModal}
+                            onAccept={this.onNewType}
                         ></TypeModal>
                     </div>
                 </div>
