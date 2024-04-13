@@ -9,15 +9,15 @@ function Modal({isOpen, onClose, onAccept}) {
     return (
         <div className="modal">
             <div className="modal__content">
-                <h2> Примеры файлов</h2>
+                <h2> Примеры запросов</h2>
                 <br></br>
                 <button className="modal-close" onClick={onClose}>X</button>
                 <div className="modal-buttons">
                     <div className="modal-buttons__row">
                         <div className="modal-buttons__col">
                             {/*<span className="modal-buttons__name">Пример 1</span>*/}
-                            <p className="modal-buttons__specification">Спецификация: Банк</p>
-                            <p className="modal-buttons__result">Результат: ок</p>
+                            <p className="modal-buttons__specification">Тип документа: Открытие ИП</p>
+                            <p className="modal-buttons__result">Результат: Неправильные документы</p>
                         </div>
                         <button className="btn btn-primary modal-buttons__button" onClick={() => onAccept("first")}>
                             Отправить
@@ -26,8 +26,8 @@ function Modal({isOpen, onClose, onAccept}) {
                     <div className="modal-buttons__row">
                         <div className="modal-buttons__col">
                             {/*<span className="modal-buttons__name">Пример 2</span>*/}
-                            <p className="modal-buttons__specification">Спецификация: Банк</p>
-                            <p className="modal-buttons__result">Результат: ок</p>
+                            <p className="modal-buttons__specification">Тип документа: Открытие ИП</p>
+                            <p className="modal-buttons__result">Результат: Правильные документы</p>
                         </div>
                         <button className="btn btn-primary modal-buttons__button"
                                 onClick={() => onAccept("second")}>

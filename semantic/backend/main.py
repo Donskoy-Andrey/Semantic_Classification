@@ -56,3 +56,36 @@ async def upload_files(files: list[UploadFile] = File(...), doctype: str = Form(
     except Exception as e:
         print(e)
         return JSONResponse(content={"message": "Failed to upload files", "error": str(e)}, status_code=500)
+
+@app.post("/handle_example")
+async def handle_example(request: dict):
+    if "name" not in request:
+        return JSONResponse(content={"message": "Failed to upload files", "error": "wrong format"}, status_code=500)
+    name = request["name"]
+    if name == "first":
+
+        res = {'files': {
+            'soglasie.rtf':
+                {'category': 'agreement'},
+            'bill.rtf':
+                {'category': 'bill'},
+            'bill_another.rtf':
+                {'category': 'bill'}
+        },
+            'status': 'bad'
+        }
+    elif name == "second":
+        res = {'files': {
+            'soglasie.rtf':
+                {'category': 'agreement'},
+            'bill.rtf':
+                {'category': 'bill'},
+            'order.rtf':
+                {'category': 'order'}
+        },
+            'status': 'ok'
+        }
+    else:
+        return JSONResponse(content={"message": "Failed to upload files", "error": "wrong format"}, status_code=500)
+
+    return JSONResponse(content=res, status_code=200)
