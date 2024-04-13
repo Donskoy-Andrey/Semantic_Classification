@@ -1,21 +1,21 @@
 {
   "bank": {
-    "name": "Банк (открытие ИП)",
+    "name": "Банк (открытие ИП) — 3 файла",
     "docs_number": 3,
     "categories": ["application", "order", "arrangement"]
   },
   "zags": {
-    "name": "Заявление в ЗАГС",
+    "name": "Заявление в ЗАГС — 1 файл",
     "docs_number": 1,
     "categories": ["application"]
   },
   "avto": {
-    "name": "Оформление продажи автомобиля",
+    "name": "Оформление продажи автомобиля — 3 файла",
     "docs_number": 3,
     "categories": ["proxy", "arrangement", "bill"]
   },
   "zakon": {
-    "name": "Публикация нового закона",
+    "name": "Публикация нового закона — 4 файла",
     "docs_number": 4,
     "categories": ["determination", "statute", "act", "order"]
   }

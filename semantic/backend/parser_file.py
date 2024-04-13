@@ -1,9 +1,8 @@
 import io
-
 from striprtf.striprtf import rtf_to_text
 from PyPDF2 import PdfReader
-import openpyxl
-from docx import Document
+import pandas as pd
+import docx2txt
 
 
 class ParserFile:
@@ -31,22 +30,16 @@ class ParserFile:
     @staticmethod
     async def read_xlsx(file):
         contents = await file.read()
-        wb = openpyxl.load_workbook(io.BytesIO(contents))
-        sheet = wb.active
-        extracted_text = ''
-        for row in sheet.iter_rows(values_only=True):
-            extracted_text += " ".join(row)
-            extracted_text += " "
+        extracted_text = pd.read_excel(
+            io.BytesIO(contents)
+        ).fillna(" ").to_string()
 
         return extracted_text
 
     @staticmethod
     async def read_docx(file):
         contents = await file.read()
-        docx_file = Document(io.BytesIO(contents))
-        extracted_text = ""
-
-        for paragraph in docx_file.paragraphs:
-            extracted_text += paragraph.text
-            extracted_text += " "
+        extracted_text = docx2txt.process(
+            io.BytesIO(contents)
+        )
         return extracted_text

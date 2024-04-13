@@ -34,6 +34,7 @@ mapping = {
     "determination": "Решение",
 }
 
+
 @app.get("/form_params")
 async def read_json_file():
     try:
@@ -77,7 +78,7 @@ async def upload_files(files: list[UploadFile] = File(...), doctype: str = Form(
                 data["text"].append(contents)
 
             if file.filename.endswith(".docx"):
-                contents = await parser.read_xlsx(file)
+                contents = await parser.read_docx(file)
 
                 data["filename"].append(file.filename)
                 data["text"].append(contents)
@@ -95,13 +96,23 @@ async def upload_files(files: list[UploadFile] = File(...), doctype: str = Form(
         total_status = True
         for filename, category in res_data.items():
             if category not in cats:
-                resp["files"][filename] = {"category": mapping[category], "valid_type": "Неожиданная категория"}
+                resp["files"][filename] = {
+                    "category": mapping[category],
+                    "valid_type": f"Неожиданная категория, ожидалась категория из списка: "
+                                  f"[{', '.join([mapping[i] for i in cats.keys()])}]",
+                }
                 total_status = False
             elif cats[category] == 1:
-                resp["files"][filename] = {"category": mapping[category], "valid_type": "Правильный документ"}
+                resp["files"][filename] = {
+                    "category": mapping[category],
+                    "valid_type": "Правильный документ",
+                }
                 cats[category] -= 1
             else:
-                resp["files"][filename] = {"category": mapping[category], "valid_type": "Лишний документ"}
+                resp["files"][filename] = {
+                    "category": mapping[category],
+                    "valid_type": "Лишний документ",
+                }
                 total_status = False
 
         # resp : {'files': {'1.txt': {'category': 'application'}}}
@@ -126,22 +137,22 @@ async def handle_example(request: dict):
 
         res = {'files': {
             'soglasie.rtf':
-                {'category': mapping['arrangement']},
+                {'category': mapping['arrangement'], "valid_type": "Правильный документ"},
             'bill.rtf':
-                {'category': mapping['bill']},
+                {'category': mapping['bill'], "valid_type": "Правильный документ"},
             'bill_another.rtf':
-                {'category': mapping['bill']}
+                {'category': mapping['bill'], "valid_type": "Лишний документ"}
         },
             'status': 'bad'
         }
     elif name == "second":
         res = {'files': {
             'soglasie.rtf':
-                {'category': mapping['arrangement']},
+                {'category': mapping['arrangement'], "valid_type": "Правильный документ"},
             'bill.rtf':
-                {'category': mapping['bill']},
+                {'category': mapping['bill'], "valid_type": "Правильный документ"},
             'order.rtf':
-                {'category': mapping['order']}
+                {'category': mapping['order'], "valid_type": "Правильный документ"}
         },
             'status': 'ok'
         }
