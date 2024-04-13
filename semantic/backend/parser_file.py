@@ -1,9 +1,8 @@
 import io
-
 from striprtf.striprtf import rtf_to_text
 from PyPDF2 import PdfReader
 import openpyxl
-from docx import Document
+import docx2txt
 
 
 class ParserFile:
@@ -43,10 +42,7 @@ class ParserFile:
     @staticmethod
     async def read_docx(file):
         contents = await file.read()
-        docx_file = Document(io.BytesIO(contents))
-        extracted_text = ""
-
-        for paragraph in docx_file.paragraphs:
-            extracted_text += paragraph.text
-            extracted_text += " "
+        extracted_text = docx2txt.process(
+            io.BytesIO(contents)
+        )
         return extracted_text

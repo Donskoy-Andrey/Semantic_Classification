@@ -77,7 +77,7 @@ async def upload_files(files: list[UploadFile] = File(...), doctype: str = Form(
                 data["text"].append(contents)
 
             if file.filename.endswith(".docx"):
-                contents = await parser.read_xlsx(file)
+                contents = await parser.read_docx(file)
 
                 data["filename"].append(file.filename)
                 data["text"].append(contents)

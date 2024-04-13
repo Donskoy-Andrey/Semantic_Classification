@@ -130,6 +130,14 @@ optional = false
 python-versions = "*"
 
 [[package]]
+name = "docx2txt"
+version = "0.8"
+description = "A pure python-based utility to extract text and images from docx files."
+category = "main"
+optional = false
+python-versions = "*"
+
+[[package]]
 name = "et-xmlfile"
 version = "1.1.0"
 description = "An implementation of lxml.xmlfile for the standard library"
@@ -361,21 +369,6 @@ description = "A fast implementation of the Cassowary constraint solver"
 category = "main"
 optional = false
 python-versions = ">=3.7"
-
-[[package]]
-name = "lxml"
-version = "5.2.1"
-description = "Powerful and Pythonic XML processing library combining libxml2/libxslt with the ElementTree API."
-category = "main"
-optional = false
-python-versions = ">=3.6"
-
-[package.extras]
-cssselect = ["cssselect (>=0.7)"]
-html5 = ["html5lib"]
-html-clean = ["lxml-html-clean"]
-htmlsoup = ["beautifulsoup4"]
-source = ["Cython (>=3.0.10)"]
 
 [[package]]
 name = "markupsafe"
@@ -835,18 +828,6 @@ python-versions = "!=3.0.*,!=3.1.*,!=3.2.*,>=2.7"
 six = ">=1.5"
 
 [[package]]
-name = "python-docx"
-version = "1.1.0"
-description = "Create, read, and update Microsoft Word .docx files."
-category = "main"
-optional = false
-python-versions = ">=3.7"
-
-[package.dependencies]
-lxml = ">=3.1.0"
-typing-extensions = "*"
-
-[[package]]
 name = "python-multipart"
 version = "0.0.9"
 description = "A streaming multipart parser for Python"
@@ -1264,7 +1245,7 @@ pymorphy2 = "*"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.10"
-content-hash = "60dbc5ca4fe2e985030be6693d35b65147307c8b223bdca33bdc781bfa7f447c"
+content-hash = "d1e8b94f96d896f934fe37165dcc95054b79a9908c81660b2989a45e2281ae27"
 
 [metadata.files]
 annotated-types = []
@@ -1279,6 +1260,7 @@ cycler = []
 dawg-python = []
 dill = []
 docopt = []
+docx2txt = []
 et-xmlfile = []
 exceptiongroup = []
 fastapi = []
@@ -1296,7 +1278,6 @@ isort = []
 jinja2 = []
 joblib = []
 kiwisolver = []
-lxml = []
 markupsafe = []
 matplotlib = []
 mccabe = []
@@ -1334,7 +1315,6 @@ pyparsing = []
 pypdf2 = []
 pytest = []
 python-dateutil = []
-python-docx = []
 python-multipart = []
 pytz = []
 pyyaml = []
