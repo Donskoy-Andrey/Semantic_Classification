@@ -68,7 +68,7 @@ const FileUploader = (props) => {
         try {
             props.setResponse({});
             setLoading(true);
-            const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/upload`, config);
+            const response = await fetch(`${process.env.REACT_APP_BACKEND}/upload`, config);
             if (response.ok) {
                 const data = await response.json(); // Await the response.json() promise
                 props.setResponse(data);
