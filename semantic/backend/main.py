@@ -54,13 +54,13 @@ async def update_template(request: dict):
             data = json.load(file)
 
         if len(request['categories']) == 0:
-            raise HTTPException(status_code=500, detail={'error': "No categories have been chosen!"})
+            return HTTPException(status_code=500, detail={'error': "Вы не выбрали категории"})
 
         new_key = 'custom_key_'
         numeric_ending = 0
         for key in data:
             if request['name'] == data[key]["name"]:
-                raise HTTPException(status_code=500, detail={'error': f"Name {request['name']} already exists!"})
+                return HTTPException(status_code=500, detail={'error': f"Имя {request['name']} уже существует!"})
 
             if new_key + str(numeric_ending) in data:
                 numeric_ending += 1

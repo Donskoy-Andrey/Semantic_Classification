@@ -28,16 +28,22 @@ class MainPage extends React.Component {
 
     componentDidMount() {
         fetch(`${process.env.REACT_APP_BACKEND}/form_params`)
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Server error');
+                }
+                return response.json();
+            })
             .then(data => {
-                console.log("init data: ", data)
-                this.setState({documentTypes: data}); // Set the fetched data to state
+                console.log("init data: ", data);
+                this.setState({ documentTypes: data }); // Set the fetched data to state
             })
             .catch(error => {
                 console.error('Error fetching data:', error);
+                alert('Сервер не отвечает'); // Display alert for status 500 error
             });
-
     }
+
 
     setFiles = (files) => {
         this.setState({ files: files });
@@ -75,17 +81,30 @@ class MainPage extends React.Component {
                 categories: categories
             })
         })
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
             .then(data => {
-                console.log("init data: ", data);
-                this.setState({documentTypes: data}); // Set the fetched data to state
+                if (data.status === "Success") {
+                    console.log("init data: ", data);
+                    this.setState({documentTypes: data}); // Set the fetched data to state
+                } else {
+                    alert(data.detail.error); // Alert the error message received from the backend
+                }
                 // Handle the fetched data as needed
             })
             .catch(error => {
-                console.error('Error fetching data:', error);
+                console.error('Error fetching data artmed:', error.detail);
+                alert('Error fetching data. Please try again later.');
+            })
+            .finally(() => {
+                this.closeTypeModal(); // Close the modal regardless of success or failure
             });
-        this.closeTypeModal();
     };
+
 
     closeTypeModal = () => {
         console.log("Modal closed");
