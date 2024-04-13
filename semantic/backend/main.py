@@ -45,14 +45,28 @@ async def read_json_file():
     except FileNotFoundError:
         raise HTTPException(status_code=404, detail="File not found")
 
+
 @app.post("/update_template")
 async def update_template(request: dict):
     try:
-        json_file_path = os.path.join(os.path.dirname(__file__), "app/data.json")
+        json_file_path = os.path.join("/app/data.json")
         with open(json_file_path, "r", encoding="utf-8") as file:
             data = json.load(file)
 
-        new_key = 'test_update'
+        if len(request['categories']) == 0:
+            raise HTTPException(status_code=500, detail={'error': "No categories have been chosen!"})
+
+        new_key = 'custom_key_'
+        numeric_ending = 0
+        for key in data:
+            if request['name'] == data[key]["name"]:
+                raise HTTPException(status_code=500, detail={'error': f"Name {request['name']} already exists!"})
+
+            if new_key + str(numeric_ending) in data:
+                numeric_ending += 1
+
+        new_key = 'custom_key_' + str(numeric_ending)
+
         new_value = {
             'name': request['name'],
             'categories': request['categories'],
@@ -66,12 +80,10 @@ async def update_template(request: dict):
         raise HTTPException(status_code=500, detail={'error': str(e)})
 
 
-
 @app.post("/upload")
 async def upload_files(files: list[UploadFile] = File(...), doctype: str = Form(...)):
     resp = {"files": {}}
     data = {'filename': [], 'text': []}
-    print('1')
     try:
         for file in files:
             print(file.filename)
