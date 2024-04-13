@@ -98,7 +98,8 @@ async def upload_files(files: list[UploadFile] = File(...), doctype: str = Form(
             if category not in cats:
                 resp["files"][filename] = {
                     "category": mapping[category],
-                    "valid_type": f"Неожиданная категория, ожидалась категория из списка: {cats}",
+                    "valid_type": f"Неожиданная категория, ожидалась категория из списка: "
+                                  f"[{', '.join([mapping[i] for i in cats.keys()])}]",
                 }
                 total_status = False
             elif cats[category] == 1:
@@ -136,22 +137,22 @@ async def handle_example(request: dict):
 
         res = {'files': {
             'soglasie.rtf':
-                {'category': mapping['arrangement']},
+                {'category': mapping['arrangement'], "valid_type": "Правильный документ"},
             'bill.rtf':
-                {'category': mapping['bill']},
+                {'category': mapping['bill'], "valid_type": "Правильный документ"},
             'bill_another.rtf':
-                {'category': mapping['bill']}
+                {'category': mapping['bill'], "valid_type": "Лишний документ"}
         },
             'status': 'bad'
         }
     elif name == "second":
         res = {'files': {
             'soglasie.rtf':
-                {'category': mapping['arrangement']},
+                {'category': mapping['arrangement'], "valid_type": "Правильный документ"},
             'bill.rtf':
-                {'category': mapping['bill']},
+                {'category': mapping['bill'], "valid_type": "Правильный документ"},
             'order.rtf':
-                {'category': mapping['order']}
+                {'category': mapping['order'], "valid_type": "Правильный документ"}
         },
             'status': 'ok'
         }
