@@ -1,5 +1,5 @@
-import json
 import os
+import json
 import pandas as pd
 from fastapi import FastAPI, File, UploadFile, Form, HTTPException
 from fastapi.responses import JSONResponse
@@ -41,12 +41,34 @@ async def upload_files(files: list[UploadFile] = File(...), doctype: str = Form(
                 data["filename"].append(file.filename)
                 data["text"].append(contents.decode("utf-8"))
 
+        # Parse json
+        json_file_path = os.path.join(os.path.dirname(__file__), "/app/data.json")
+        with open(json_file_path, "r", encoding="utf-8") as file:
+            json_file = json.load(file)
+        cats = json_file[doctype]['categories']
+        cats = {cat: 1 for cat in cats}
+
         df_data = pd.DataFrame(data)
         res_data = model_.predict(df_data)
-        for key, value in res_data.items():
-            resp["files"][key] = {"category": f"{value}"}
 
-        resp["status"] = "ok"
+        total_status = True
+        for filename, category in res_data.items():
+            if category not in cats:
+                resp["files"][filename] = {"category": category, "valid_type": "Неожиданная категория"}
+                total_status = False
+            elif cats[category] == 1:
+                resp["files"][filename] = {"category": category, "valid_type": "Правильный документ"}
+                cats[category] -= 1
+            else:
+                resp["files"][filename] = {"category": category, "valid_type": "Лишний документ"}
+                total_status = False
+
+        # resp : {'files': {'1.txt': {'category': 'application'}}}
+
+        if total_status is True:
+            resp["status"] = "ok"
+        else:
+            resp["status"] = "bad"
 
         return JSONResponse(content=resp, status_code=200)
     except Exception as e:

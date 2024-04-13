@@ -1,17 +1,22 @@
 {
   "bank": {
-    "name": "банк",
+    "name": "Банк (открытие ИП)",
     "docs_number": 3,
-    "categories": ["test1", "test2", "test3"]
+    "categories": ["application", "determination", "invoice"]
   },
-  "test1": {
-    "name": "тест1",
-    "docs_number": 2,
-    "categories": ["test2", "test3"]
+  "zags": {
+    "name": "Заявление в ЗАГС",
+    "docs_number": 1,
+    "categories": ["application"]
   },
-  "test2": {
-    "name": "тест2",
+  "avto": {
+    "name": "Оформление продажи автомобиля",
+    "docs_number": 3,
+    "categories": ["proxy", "arrangement", "bill"]
+  },
+  "zakon": {
+    "name": "Публикация нового закона",
     "docs_number": 4,
-    "categories": ["test1", "test2", "test3", "test3"]
+    "categories": ["determination", "statute", "act", "order"]
   }
 }
