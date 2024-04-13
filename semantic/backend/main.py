@@ -51,38 +51,17 @@ async def read_json_file():
 async def upload_files(files: list[UploadFile] = File(...), doctype: str = Form(...)):
     resp = {"files": {}}
     data = {'filename': [], 'text': []}
+    read_config = {".txt": parser.read_txt,
+                   ".rtf": parser.read_rtf,
+                   ".pdf": parser.read_pdf,
+                   ".xlsx": parser.read_xlsx,
+                   ".docx": parser.read_docx,
+                   }
     try:
         for file in files:
-
-            if file.filename.endswith(".txt"):
-                contents = await parser.read_txt(file)
-
-                data["filename"].append(file.filename)
-                data["text"].append(contents)
-
-            if file.filename.endswith(".rtf"):
-                contents = await parser.read_rtf(file)
-
-                data["filename"].append(file.filename)
-                data["text"].append(contents)
-
-            if file.filename.endswith(".pdf"):
-                contents = await parser.read_pdf(file)
-
-                data["filename"].append(file.filename)
-                data["text"].append(contents)
-
-            if file.filename.endswith(".xlsx"):
-                contents = await parser.read_xlsx(file)
-
-                data["filename"].append(file.filename)
-                data["text"].append(contents)
-
-            if file.filename.endswith(".docx"):
-                contents = await parser.read_docx(file)
-
-                data["filename"].append(file.filename)
-                data["text"].append(contents)
+            contents = await read_config[os.path.splitext(file.filename)[1]](file)
+            data["filename"].append(file.filename)
+            data["text"].append(contents)
 
         # Parse json
         json_file_path = os.path.join(os.path.dirname(__file__), "/app/data.json")
