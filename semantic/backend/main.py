@@ -120,7 +120,7 @@ async def upload_files(files: list[UploadFile] = File(...), doctype: str = Form(
             else:
                 resp["status"] = "bad"
 
-            return JSONResponse(content=resp, status_code=200)
+        return JSONResponse(content=resp, status_code=200)
     except Exception as e:
         return JSONResponse(content={"message": "Failed to upload files", "error": str(e)}, status_code=500)
 
