@@ -55,6 +55,9 @@ class SemanticModel:
     dates_extractor = DatesExtractor(morph_vocab)
     addr_extractor = AddrExtractor(morph_vocab)
 
+    # Подгрузка модели
+    loaded_model = joblib.load('data/model.sav')
+
     def __init__(self, **kwargs):
         self.status_error = None
 
@@ -129,18 +132,15 @@ class SemanticModel:
 
     def predict(self,
                 test_df: pd.DataFrame,
-                model_path: str = '../../data/model.sav'
-                ) -> list[str]:
+                ) -> dict:
         """
         Inference
 
-        :param test_df: columns - [['text']]. Should be processed!
-        :param path_to_stat: path to stat.csv file
+        :param test_df: columns - [['filename', 'text']]. Should be processed!
 
         :return: list[class_]
         """
         test_df['text'] = test_df['text'].apply(self._data_processing)
-        loaded_model = joblib.load(model_path)
 
         top_words = [
             "адрес", "акт", "бальмонт", "валюта", "весь", "выдать", "год", "город", "груз", "дата", "действовать",
@@ -152,12 +152,12 @@ class SemanticModel:
             "соглашение", "составить", "составлять", "срок", "сторона", "сумма", "товар", "требовать", "указать",
             "условие", "услуга", "устав", "уставный", "участник", "часть", "электронный"
         ]
-
         for top in top_words:
             test_df[top] = test_df['text'].str.findall(top).str.len()
-
         test_df = test_df.drop(columns=['text'])
-        preds = loaded_model.predict(test_df[top_words]).tolist()
+        preds = self.loaded_model.predict(test_df[top_words]).tolist()
+        filenames = test_df['filename'].values.tolist()
+        preds = dict(zip(filenames, preds))
         return preds
 
 

@@ -1,11 +1,15 @@
 import json
 import os
+import pandas as pd
 
 from fastapi import FastAPI, File, UploadFile, Form, HTTPException
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 import asyncio
 
+from .model import SemanticModel
+
+model_ = SemanticModel()
 
 app = FastAPI()
 
@@ -19,14 +23,6 @@ app.add_middleware(
 )
 
 
-async def simulate_processing():
-    # Simulate processing by waiting for 1 second
-    await asyncio.sleep(1)
-
-@app.get("/")
-async def main():
-    return JSONResponse({"message": "hello world"})
-
 
 @app.get("/form_params")
 async def read_json_file():
@@ -34,7 +30,6 @@ async def read_json_file():
         json_file_path = os.path.join(os.path.dirname(__file__), "../data.json")
         with open(json_file_path, "r", encoding="utf-8") as file:
             data = json.load(file)
-            print(f"{data}")
         return JSONResponse(content=data)
     except FileNotFoundError:
         raise HTTPException(status_code=404, detail="File not found")
@@ -43,27 +38,21 @@ async def read_json_file():
 @app.post("/upload")
 async def upload_files(files: list[UploadFile] = File(...), doctype: str = Form(...)):
     try:
-        print(f"{doctype=}")
-        total_files = len(files)
-        files_uploaded = 0
         resp = {"files": {}}
-
+        data = {'filename': [], 'text': []}
         for file in files:
-            contents = await file.read()
+            if file.filename.split(".")[-1] == "txt":
+                contents = await file.read()
+                data["filename"].append(file.filename)
+                data["text"].append(contents.decode("utf-8"))
 
-            # Do something with the file contents, such as saving it to disk or processing it
-            # For example, to save it to disk:
-            # with open(file.filename, "wb") as f:
-            #     f.write(contents)
-            print(f"{file.filename=}")
+        df_data = pd.DataFrame(data)
+        res_data = model_.predict(df_data)
 
-            resp["files"][file.filename] = {"category": f"category_{files_uploaded}"}
-            files_uploaded += 1
+        for key, value in res_data.items():
+            resp["files"][key] = {"category": f"{value}"}
 
-            # Simulate processing asynchronously
-            await simulate_processing()
         resp["status"] = "ok"
-        print(f"{resp=}")
 
         return JSONResponse(content=resp, status_code=200)
     except Exception as e:
