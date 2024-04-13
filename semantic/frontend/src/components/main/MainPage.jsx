@@ -24,7 +24,6 @@ class MainPage extends React.Component {
     }
 
     componentDidMount() {
-        console.log('testtesttes: ', `${process.env.REACT_APP_BACKEND}/form_params`)
         fetch(`${process.env.REACT_APP_BACKEND}/form_params`)
             .then(response => response.json())
             .then(data => {

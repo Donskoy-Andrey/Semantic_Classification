@@ -4,6 +4,7 @@ import Header from './components/headers/Header';
 import MainPage from './components/main/MainPage';
 import InfoPage from './components/info/InfoPage';
 import {Footer} from "./components/footer/Footer";
+import ZipUploader from "./components/zip_uploader/ZipUploader";
 import './index.css'
 
 const App = () => {
@@ -17,6 +18,8 @@ const App = () => {
         return <MainPage />;
       case 'info':
         return <InfoPage />;
+      case 'zip':
+        return <ZipUploader />;
       default:
         return <MainPage />;
     }
