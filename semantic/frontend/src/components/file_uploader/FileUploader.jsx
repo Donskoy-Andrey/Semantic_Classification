@@ -130,7 +130,7 @@ const FileUploader = (props) => {
                 {/*<i className="fa-solid fa-file-export fa-big"></i>*/}
                 {/*<i className="fa-solid fa-file-arrow-down fa-big"></i>*/}
                 <h3>Перетащите файл{docs_number > 1 ? `ы (${docs_number} шт.)` : ''} сюда <br/>или <div
-                    className="text-warning">выберите их вручную</div></h3>
+                    className="text-warning">выберите {docs_number > 1 ? `их` : 'его'} вручную</div></h3>
                 <div className="drag-drop-field__extensions">pdf, doc, docx, xlsx, txt, rtf</div>
                 <input
                     type="file"

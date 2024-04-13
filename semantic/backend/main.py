@@ -5,8 +5,10 @@ from fastapi import FastAPI, File, UploadFile, Form, HTTPException, APIRouter
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 from .model import SemanticModel
+from .parser_file import ParserFile
 
 model_ = SemanticModel()
+parser = ParserFile()
 
 app = FastAPI()
 
@@ -19,6 +21,19 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+mapping = {
+    "proxy": "Доверенность",
+    "contract": "Договор",
+    "act": "Акт",
+    "application": "Заявление",
+    "order": "Приказ",
+    "invoice": "Счет",
+    "bill": "Приложение",
+    "arrangement": "Соглашение",
+    "contract offer": "Договор оферты",
+    "statute": "Устав",
+    "determination": "Решение",
+}
 
 @app.get("/form_params")
 async def read_json_file():
@@ -33,14 +48,40 @@ async def read_json_file():
 
 @app.post("/upload")
 async def upload_files(files: list[UploadFile] = File(...), doctype: str = Form(...)):
+    resp = {"files": {}}
+    data = {'filename': [], 'text': []}
     try:
-        resp = {"files": {}}
-        data = {'filename': [], 'text': []}
         for file in files:
-            if file.filename.split(".")[-1] == "txt":
-                contents = await file.read()
+
+            if file.filename.endswith(".txt"):
+                contents = await parser.read_txt(file)
+
                 data["filename"].append(file.filename)
-                data["text"].append(contents.decode("utf-8"))
+                data["text"].append(contents)
+
+            if file.filename.endswith(".rtf"):
+                contents = await parser.read_rtf(file)
+
+                data["filename"].append(file.filename)
+                data["text"].append(contents)
+
+            if file.filename.endswith(".pdf"):
+                contents = await parser.read_pdf(file)
+
+                data["filename"].append(file.filename)
+                data["text"].append(contents)
+
+            if file.filename.endswith(".xlsx"):
+                contents = await parser.read_xlsx(file)
+
+                data["filename"].append(file.filename)
+                data["text"].append(contents)
+
+            if file.filename.endswith(".docx"):
+                contents = await parser.read_xlsx(file)
+
+                data["filename"].append(file.filename)
+                data["text"].append(contents)
 
         # Parse json
         json_file_path = os.path.join(os.path.dirname(__file__), "/app/data.json")
@@ -55,13 +96,13 @@ async def upload_files(files: list[UploadFile] = File(...), doctype: str = Form(
         total_status = True
         for filename, category in res_data.items():
             if category not in cats:
-                resp["files"][filename] = {"category": category, "valid_type": "Неожиданная категория"}
+                resp["files"][filename] = {"category": mapping[category], "valid_type": "Неожиданная категория"}
                 total_status = False
             elif cats[category] == 1:
-                resp["files"][filename] = {"category": category, "valid_type": "Правильный документ"}
+                resp["files"][filename] = {"category": mapping[category], "valid_type": "Правильный документ"}
                 cats[category] -= 1
             else:
-                resp["files"][filename] = {"category": category, "valid_type": "Лишний документ"}
+                resp["files"][filename] = {"category": mapping[category], "valid_type": "Лишний документ"}
                 total_status = False
 
         # resp : {'files': {'1.txt': {'category': 'application'}}}
@@ -86,22 +127,22 @@ async def handle_example(request: dict):
 
         res = {'files': {
             'soglasie.rtf':
-                {'category': 'agreement'},
+                {'category': mapping['arrangement']},
             'bill.rtf':
-                {'category': 'bill'},
+                {'category': mapping['bill']},
             'bill_another.rtf':
-                {'category': 'bill'}
+                {'category': mapping['bill']}
         },
             'status': 'bad'
         }
     elif name == "second":
         res = {'files': {
             'soglasie.rtf':
-                {'category': 'agreement'},
+                {'category': mapping['arrangement']},
             'bill.rtf':
-                {'category': 'bill'},
+                {'category': mapping['bill']},
             'order.rtf':
-                {'category': 'order'}
+                {'category': mapping['order']}
         },
             'status': 'ok'
         }
