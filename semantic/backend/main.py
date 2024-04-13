@@ -55,7 +55,7 @@ async def upload_files(files: list[UploadFile] = File(...), doctype: str = Form(
             # with open(file.filename, "wb") as f:
             #     f.write(contents)
             print(f"{file.filename=}")
-            resp[file.filename] = f"category_{files_uploaded}"
+            resp[file.filename] = {"category": f"category_{files_uploaded}"}
             files_uploaded += 1
 
             # Simulate processing asynchronously

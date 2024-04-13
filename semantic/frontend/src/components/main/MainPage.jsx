@@ -3,6 +3,7 @@ import "./style.css";
 import Modal from "../modal/Modal";
 import FileUploader from "../file_uploader/FileUploader";
 import {TypesDropdown} from "../types_dropdown/TypesDropdown";
+import {Categories} from "../categories/Categories";
 
 
 class MainPage extends React.Component {
@@ -20,7 +21,7 @@ class MainPage extends React.Component {
             image: false,
             isModalOpen: false,
             visited: false,
-            response_data: {}
+            responseData: {}
         };
     }
 
@@ -58,7 +59,7 @@ class MainPage extends React.Component {
     }
 
     setResponse = (data) => {
-        this.setState({response_data: data})
+        this.setState({responseData: data})
     }
 
     sendExample = async (event, name) => {
@@ -99,7 +100,7 @@ class MainPage extends React.Component {
     };
 
     render() {
-        const { file, loading, image, imageURL, isModalOpen, visited } = this.state;
+        const { file, loading, image, imageURL, isModalOpen, visited, responseData} = this.state;
         console.log('visited',visited);
 
         return (
@@ -117,6 +118,15 @@ class MainPage extends React.Component {
                         documentTypes={this.state.documentTypes}
                         setResponse={this.setResponse}
                     />
+
+                    {
+                        Object.keys(responseData).length > 0 && (
+                            <Categories
+                                responseData={responseData}
+                                docType={this.state.documentTypes[this.state.currentDocType]}
+                            />
+                        )
+                    }
 
                     {loading && (
                         <div className="big-center loader"></div>
