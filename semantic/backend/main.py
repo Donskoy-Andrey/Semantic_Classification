@@ -5,8 +5,10 @@ from fastapi import FastAPI, File, UploadFile, Form, HTTPException
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 from .model import SemanticModel
+from .parser_file import ParserFile
 
 model_ = SemanticModel()
+parser = ParserFile()
 
 app = FastAPI()
 
@@ -45,14 +47,40 @@ async def read_json_file():
 
 @app.post("/upload")
 async def upload_files(files: list[UploadFile] = File(...), doctype: str = Form(...)):
+    resp = {"files": {}}
+    data = {'filename': [], 'text': []}
     try:
-        resp = {"files": {}}
-        data = {'filename': [], 'text': []}
         for file in files:
-            if file.filename.split(".")[-1] == "txt":
-                contents = await file.read()
+
+            if file.filename.endswith(".txt"):
+                contents = await parser.read_txt(file)
+
                 data["filename"].append(file.filename)
-                data["text"].append(contents.decode("utf-8"))
+                data["text"].append(contents)
+
+            if file.filename.endswith(".rtf"):
+                contents = await parser.read_rtf(file)
+
+                data["filename"].append(file.filename)
+                data["text"].append(contents)
+
+            if file.filename.endswith(".pdf"):
+                contents = await parser.read_pdf(file)
+
+                data["filename"].append(file.filename)
+                data["text"].append(contents)
+
+            if file.filename.endswith(".xlsx"):
+                contents = await parser.read_xlsx(file)
+
+                data["filename"].append(file.filename)
+                data["text"].append(contents)
+
+            if file.filename.endswith(".docx"):
+                contents = await parser.read_xlsx(file)
+
+                data["filename"].append(file.filename)
+                data["text"].append(contents)
 
         # Parse json
         json_file_path = os.path.join(os.path.dirname(__file__), "/app/data.json")
