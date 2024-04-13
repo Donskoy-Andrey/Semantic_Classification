@@ -10,8 +10,6 @@ model_ = SemanticModel()
 
 app = FastAPI()
 
-router = APIRouter(prefix="/api")
-app.include_router(router)
 
 app.add_middleware(
     CORSMiddleware,
