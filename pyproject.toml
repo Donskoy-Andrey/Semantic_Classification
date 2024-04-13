@@ -26,6 +26,7 @@ transformers = "^4.35.2"
 plotly = "^5.18.0"
 fastapi = "^0.110.1"
 uvicorn = "^0.29.0"
+natasha = "^1.6.0"
 
 [tool.poetry.dev-dependencies]
 pytest = "^8.1.1"
