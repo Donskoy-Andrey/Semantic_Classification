@@ -12,9 +12,11 @@ const FileUploader = (props) => {
     const docs_number = props.documentTypes[props.currentDocType].docs_number;
 
     const handleFileChange = (e) => {
+        console.log('supertest ', selectedFiles === e.target.files);
         setSelectedFiles([...selectedFiles, ...e.target.files]);
         console.log('selected files: ', e.target.files[0]);
     };
+
 
     const checkFiles = (files) => {
         if (!(files && files.length)) {
@@ -76,9 +78,11 @@ const FileUploader = (props) => {
                 props.setResponse(data);
                 setSelectedFiles([]);
             } else {
-                console.error('Error uploading files:', response.statusText);
+                console.error('Error uploading files:', response.statusText, response.message);
             }
             props.setFiles(selectedFiles);
+            setSelectedFiles([]);
+            fileInputRef.current.value = ''
         } catch (error) {
             console.error('Error uploading files:', error);
         } finally {
@@ -108,16 +112,15 @@ const FileUploader = (props) => {
         </Popover>
     );
 
-    const popoverContent = `Допустимые форматы: 
-    pdf, 
-    doc, 
-    docx, 
-    xlsx, 
-    txt, 
+    const popoverContent = `Допустимые форматы:
+    pdf,
+    doc,
+    docx,
+    xlsx,
+    txt,
     rtf`;
 
     return (
-
         <div>
             <div
                 onClick={handleClick}
@@ -125,16 +128,17 @@ const FileUploader = (props) => {
                 onDragOver={handleDragOver}
                 className="drag-drop-field"
             >
-                {/*<i className="fa-regular fa-file fa-big"></i>*/}
+                <i className="fa-regular fa-file-lines fa-big"></i>
                 {/*<i className="fa-solid fa-file-export fa-big"></i>*/}
-                <i className="fa-solid fa-file-arrow-down fa-big"></i>
+                {/*<i className="fa-solid fa-file-arrow-down fa-big"></i>*/}
                 <h3>Перетащите файл{docs_number > 1 ? `ы (${docs_number} шт.)` : ''} сюда <br/>или <div
                     className="text-warning">выберите их вручную</div></h3>
                 <div className="drag-drop-field__extensions">pdf, doc, docx, xlsx, txt, rtf</div>
                 <input
                     type="file"
                     multiple
-                    onChange={handleFileChange}
+                    onInput={handleFileChange}
+                    // onChange={handleFileChange}
                     ref={fileInputRef}
                     style={{display: 'none'}}
                 />
@@ -152,7 +156,7 @@ const FileUploader = (props) => {
                     selectedFiles.map((file, i) => (
                         <div className={`uploaded-file__item ${checkFileFormat(file) ? "" : "wrong"}`} key={i}>
                             {checkFileFormat(file) ? (
-                                <span>{file.name}</span>
+                                <span>{file.name.length > 15 ? `${file.name.substring(0, 5)}...${file.name.substring(file.name.length - 10)}` : file.name}</span>
                             ) : (
                                 <OverlayTrigger
                                     trigger={['hover', 'focus']}

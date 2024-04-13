@@ -23,7 +23,6 @@ app.add_middleware(
 )
 
 
-
 @app.get("/form_params")
 async def read_json_file():
     try:
@@ -48,7 +47,6 @@ async def upload_files(files: list[UploadFile] = File(...), doctype: str = Form(
 
         df_data = pd.DataFrame(data)
         res_data = model_.predict(df_data)
-
         for key, value in res_data.items():
             resp["files"][key] = {"category": f"{value}"}
 
@@ -56,4 +54,5 @@ async def upload_files(files: list[UploadFile] = File(...), doctype: str = Form(
 
         return JSONResponse(content=resp, status_code=200)
     except Exception as e:
+        print(e)
         return JSONResponse(content={"message": "Failed to upload files", "error": str(e)}, status_code=500)
