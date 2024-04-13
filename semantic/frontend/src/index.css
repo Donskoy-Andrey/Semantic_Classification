@@ -316,3 +316,46 @@ option, select{
   text-transform: capitalize;
 }
 
+.status{
+  display: block;
+  width: 100%;
+  height: 40px;
+  line-height: 40px;
+  text-align: center;
+  color: #fff;
+  font-size: 20px;
+  text-transform: uppercase;
+  border-radius: 15px;
+  margin: 20px 0;
+}
+.ok{
+  background-color: green;
+}
+.bad{
+  background-color: red;
+}
+
+.response-file__container{
+  display: flex;
+  align-items: stretch;
+  justify-content: space-between;
+  border: 1px solid #424449;
+  border-radius: 5px;
+  padding-left: 20px;
+  margin-bottom: 10px;
+  height: 45px;
+}
+
+.response-file__key{
+  display: flex;
+  align-items: center;
+}
+
+.response-file__category{
+  margin-left: 15px;
+  background-color: #424444;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  padding: 0 15px;
+}

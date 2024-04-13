@@ -1,6 +1,7 @@
 import React, {useState, useRef} from 'react';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Popover from 'react-bootstrap/Popover';
+import {Categories} from "../categories/Categories";
 
 const FileUploader = (props) => {
     const allowedFormats = ['pdf', 'doc', 'docx', 'xlsx', 'txt', 'rtf'];
@@ -21,14 +22,14 @@ const FileUploader = (props) => {
             return false;
         }
 
-        if (files.length !== docs_number){
+        if (files.length !== docs_number) {
             alert(`неверное количество документов (должно быть ${docs_number})`)
             return false;
         }
 
         for (let i = 0; i < files.length; i++) {
             const extension = files[i].name.split('.').pop().toLowerCase();
-            if (!allowedFormats.includes(extension)){
+            if (!allowedFormats.includes(extension)) {
                 setFormValid(false);
                 alert("Неверный формат файла")
                 return false;
@@ -52,7 +53,7 @@ const FileUploader = (props) => {
         const formData = new FormData();
         console.log('currentDocType:', props.currentDocType);
 
-        if (!checkFiles(selectedFiles)){
+        if (!checkFiles(selectedFiles)) {
             return;
         }
         for (let i = 0; i < selectedFiles.length; i++) {
@@ -73,6 +74,7 @@ const FileUploader = (props) => {
             if (response.ok) {
                 const data = await response.json(); // Await the response.json() promise
                 props.setResponse(data);
+                setSelectedFiles([]);
             } else {
                 console.error('Error uploading files:', response.statusText);
             }
@@ -80,7 +82,7 @@ const FileUploader = (props) => {
         } catch (error) {
             console.error('Error uploading files:', error);
         } finally {
-          setLoading(false);
+            setLoading(false);
         }
     };
 
@@ -126,7 +128,8 @@ const FileUploader = (props) => {
                 {/*<i className="fa-regular fa-file fa-big"></i>*/}
                 {/*<i className="fa-solid fa-file-export fa-big"></i>*/}
                 <i className="fa-solid fa-file-arrow-down fa-big"></i>
-                <h3>Перетащите файл{docs_number > 1 ? `ы (${docs_number} шт.)`: ''} сюда <br/>или <div className="text-warning">выберите их вручную</div></h3>
+                <h3>Перетащите файл{docs_number > 1 ? `ы (${docs_number} шт.)` : ''} сюда <br/>или <div
+                    className="text-warning">выберите их вручную</div></h3>
                 <div className="drag-drop-field__extensions">pdf, doc, docx, xlsx, txt, rtf</div>
                 <input
                     type="file"
@@ -145,25 +148,24 @@ const FileUploader = (props) => {
                 <div className="big-center loader"></div>
             )}
             <div className="uploaded-file__container">
-            {selectedFiles.length > 0 && (
-                selectedFiles.map((file, i) => (
-                    <div className={`uploaded-file__item ${checkFileFormat(file)? "": "wrong"}`} key={i}>
-
-                        {checkFileFormat(file) ? (
-                            <span>{file.name}</span>
-                        ) : (
-                            <OverlayTrigger
-                                trigger={['hover', 'focus']}
-                                placement="top"
-                                overlay={renderPopover('Неверный формат', popoverContent)}
-                            >
+                {selectedFiles.length > 0 && (
+                    selectedFiles.map((file, i) => (
+                        <div className={`uploaded-file__item ${checkFileFormat(file) ? "" : "wrong"}`} key={i}>
+                            {checkFileFormat(file) ? (
                                 <span>{file.name}</span>
-                            </OverlayTrigger>
-                        )}
-                        <button className="btn uploaded-file__button" onClick={() =>deleteFile(i)}>X</button>
-                    </div>
-                ))
-            )}
+                            ) : (
+                                <OverlayTrigger
+                                    trigger={['hover', 'focus']}
+                                    placement="top"
+                                    overlay={renderPopover('Неверный формат', popoverContent)}
+                                >
+                                    <span>{file.name}</span>
+                                </OverlayTrigger>
+                            )}
+                            <button className="btn uploaded-file__button" onClick={() => deleteFile(i)}>X</button>
+                        </div>
+                    ))
+                )}
             </div>
         </div>
     );
