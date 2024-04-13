@@ -82,6 +82,7 @@ const FileUploader = (props) => {
             }
             props.setFiles(selectedFiles);
             setSelectedFiles([]);
+            fileInputRef.current.value = ''
         } catch (error) {
             console.error('Error uploading files:', error);
         } finally {
@@ -156,7 +157,7 @@ const FileUploader = (props) => {
                     selectedFiles.map((file, i) => (
                         <div className={`uploaded-file__item ${checkFileFormat(file) ? "" : "wrong"}`} key={i}>
                             {checkFileFormat(file) ? (
-                                <span>{file.name}</span>
+                                <span>{file.name.length > 15 ? `${file.name.substring(0, 5)}...${file.name.substring(file.name.length - 10)}` : file.name}</span>
                             ) : (
                                 <OverlayTrigger
                                     trigger={['hover', 'focus']}
