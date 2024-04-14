@@ -157,22 +157,19 @@ async def read_doc_zip(paths: list[str]) -> dict:
                    }
 
     for path in paths:
-        contents = await read_config[os.path.splitext(os.path.splitext(path)[1])](path)
+        contents = read_config[os.path.splitext(path)[1]](path)
         data["filename"].append(path)
         data["text"].append(contents)
-    print(data)
     preds = model_.predict(pd.DataFrame(data))
     return preds
 
-def create_folders_and_sort_files(folders_dict):
-    for folder_name, files_list in folders_dict.items():
-        if not os.path.exists(folder_name):
-            os.makedirs(folder_name)
 
-        for file_path in files_list:
-            file_name = os.path.basename(file_path)
-            destination_path = os.path.join(folder_name, file_name)
-            shutil.copy(file_path, destination_path)
+def create_folders_and_sort_files(folders_dict, folder_name):
+    for filename, prediction_classname in folders_dict.items():
+        if not os.path.exists(folder_name + f"/{prediction_classname}/"):
+            os.mkdir(folder_name + prediction_classname)
+            destination_path = os.path.join(folder_name + f"/{prediction_classname}/", os.path.basename(filename))
+            shutil.copy(filename, destination_path)
 
 
 async def create_zip_response():
@@ -183,7 +180,7 @@ async def create_zip_response():
     :param output_zip_path: Путь к выходному ZIP-файлу.
     """
     try:
-        with zipfile.ZipFile('/app/tmp', 'w', zipfile.ZIP_DEFLATED) as zipf:
+        with zipfile.ZipFile('/app/tmp/result.zip', 'w', zipfile.ZIP_DEFLATED) as zipf:
             for root, _, files in os.walk('/app/tmp'):
                 for file in files:
                     file_path = os.path.join(root, file)
@@ -192,7 +189,7 @@ async def create_zip_response():
         print(f"Папка успешно запакована в /app/tmp/")
     except Exception as e:
         print(f"Ошибка при создании ZIP-архива: {e}")
-    return FileResponse(r'/app/tmp.zip')
+    return FileResponse(r'/app/tmp/result.zip')
 
 @app.post("/upload_zip")
 async def upload_zip(file: UploadFile = File(...)):
@@ -208,15 +205,16 @@ async def upload_zip(file: UploadFile = File(...)):
 
     filenames = []
     for filename in os.listdir(f"/app/tmp/{archive_name}"):
-        filenames.append("/app/tmp/" + filename)
-    print(filenames)  # <-- ТУТ ВСЕ ПОЛНЫЕ ПУТИ К ФАЙЛАМ
-    path_to_mapping = read_doc_zip # FUNCTION TO READ FILES
-    print(path_to_mapping)
-    create_folders_and_sort_files(path_to_mapping) # FUNCTION TO PASS FILES TO MODEL
-    create_zip_response() # FUNCTION TO CREATE RESPONSE
+        filenames.append(f"/app/tmp/{archive_name}/" + filename)
+    print(filenames)
+    # path_to_mapping = await read_doc_zip(filenames) # FUNCTION TO READ FILES
+    # print(path_to_mapping)
+    # create_folders_and_sort_files(path_to_mapping, f"/app/tmp/{archive_name}/") # FUNCTION TO PASS FILES TO MODEL
+    # response = await create_zip_response() # FUNCTION TO CREATE RESPONSE
     try:
-        os.remove(f"/app/tmp/{file.filename}")
-        shutil.rmtree(f"/app/tmp/{archive_name}")
+        pass
+        # os.remove(f"/app/tmp/{file.filename}")
+        # shutil.rmtree(f"/app/tmp/{archive_name}")
     except (FileNotFoundError, ):
         pass
     return JSONResponse(content={}, status_code=200)
