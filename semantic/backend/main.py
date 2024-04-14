@@ -1,5 +1,7 @@
 import os
 import json
+import shutil
+
 import pandas as pd
 import aiofiles
 import zipfile
@@ -8,6 +10,7 @@ from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 from .model import SemanticModel
 from .parser_file import ParserFile
+from fastapi.responses import FileResponse
 
 model_ = SemanticModel()
 parser = ParserFile()
