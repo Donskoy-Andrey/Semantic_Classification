@@ -1,1 +1,22 @@
-{"bank": {"name": "\u0411\u0430\u043d\u043a (\u043e\u0442\u043a\u0440\u044b\u0442\u0438\u0435 \u0418\u041f) \u2014 3 \u0444\u0430\u0439\u043b\u0430", "docs_number": 3, "categories": ["application", "order", "arrangement"]}, "zags": {"name": "\u0417\u0430\u044f\u0432\u043b\u0435\u043d\u0438\u0435 \u0432 \u0417\u0410\u0413\u0421 \u2014 1 \u0444\u0430\u0439\u043b", "docs_number": 1, "categories": ["application"]}, "avto": {"name": "\u041e\u0444\u043e\u0440\u043c\u043b\u0435\u043d\u0438\u0435 \u043f\u0440\u043e\u0434\u0430\u0436\u0438 \u0430\u0432\u0442\u043e\u043c\u043e\u0431\u0438\u043b\u044f \u2014 3 \u0444\u0430\u0439\u043b\u0430", "docs_number": 3, "categories": ["proxy", "arrangement", "bill"]}, "zakon": {"name": "\u041f\u0443\u0431\u043b\u0438\u043a\u0430\u0446\u0438\u044f \u043d\u043e\u0432\u043e\u0433\u043e \u0437\u0430\u043a\u043e\u043d\u0430 \u2014 4 \u0444\u0430\u0439\u043b\u0430", "docs_number": 4, "categories": ["determination", "statute", "act", "order"]}, "custom_key_0": {"name": "test", "categories": ["proxy"], "docs_number": 1}, "custom_key_1": {"name": "test2", "categories": ["proxy", "contract"], "docs_number": 2}, "custom_key_2": {"name": "test5", "categories": ["proxy"], "docs_number": 1}, "custom_key_3": {"name": "6hui", "categories": ["proxy", "act", "order"], "docs_number": 3}, "custom_key_4": {"name": "6hui4", "categories": ["proxy", "act", "order"], "docs_number": 3}, "custom_key_5": {"name": "jhgdsf", "categories": ["contract"], "docs_number": 1}, "custom_key_6": {"name": "hjgjhfgsd", "categories": ["contract"], "docs_number": 1}, "custom_key_7": {"name": "sdfsdfsdf", "categories": ["proxy"], "docs_number": 1}, "custom_key_8": {"name": "test345345", "categories": ["proxy"], "docs_number": 1}, "custom_key_9": {"name": "artmed", "categories": ["proxy"], "docs_number": 1}, "custom_key_10": {"name": "huinya", "categories": ["proxy"], "docs_number": 1}, "custom_key_11": {"name": "donskow", "categories": ["proxy"], "docs_number": 1}, "custom_key_12": {"name": "hihiuhiu", "categories": ["proxy"], "docs_number": 1}, "custom_key_13": {"name": "ali", "categories": ["proxy", "act"], "docs_number": 2}, "custom_key_14": {"name": "alihui", "categories": ["bill", "order"], "docs_number": 2}, "custom_key_15": {"name": "medved", "categories": ["proxy", "bill"], "docs_number": 2}, "custom_key_16": {"name": "lkjshaflkjsdsfdafasd", "categories": ["proxy", "act"], "docs_number": 2}, "custom_key_17": {"name": "lhlfiuahlfuihdliufshl", "categories": ["order"], "docs_number": 1}, "custom_key_18": {"name": "lkopopo", "categories": ["proxy"], "docs_number": 1}, "custom_key_19": {"name": "stewen", "categories": ["proxy"], "docs_number": 1}, "custom_key_20": {"name": "lol", "categories": ["proxy"], "docs_number": 1}, "custom_key_21": {"name": "gay", "categories": ["proxy"], "docs_number": 1}, "custom_key_22": {"name": "iamgay2", "categories": ["contract"], "docs_number": 1}}
+{
+  "bank": {
+    "name": "Банк (открытие ИП) — 3 файла",
+    "docs_number": 3,
+    "categories": ["application", "determination", "invoice"]
+  },
+  "zags": {
+    "name": "Банк (открытие счета) — 1 файл",
+    "docs_number": 1,
+    "categories": ["application"]
+  },
+  "avto": {
+    "name": "Банк (оформление кредита) — 3 файла",
+    "docs_number": 3,
+    "categories": ["proxy", "arrangement", "bill"]
+  },
+  "zakon": {
+    "name": "Банк (оформление ипотеки) — 4 файла",
+    "docs_number": 4,
+    "categories": ["determination", "statute", "act", "order"]
+  }
+}

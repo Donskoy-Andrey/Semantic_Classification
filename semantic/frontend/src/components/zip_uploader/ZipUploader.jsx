@@ -44,6 +44,7 @@ const ZipUploadComponent = ({ docsNumber, openModal }) => {
             console.log(blob);
             setOutputFile(blob); // Set the output file received from the server
         } catch (error) {
+            alert("Ошибка в обработке файла, попробуйте еще раз");
             console.error('Error uploading file:', error);
             alert('Failed to process file');
         }finally {

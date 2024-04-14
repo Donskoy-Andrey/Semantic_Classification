@@ -34,7 +34,10 @@ export const Categories = (props) => {
                 cls = "bg-yellow";
                 break;
             default:
-                cls = '';
+                if (validType.startsWith("Неожиданная категория")) {
+                    cls = "bg-red";
+                }
+                break;
         }
         return cls;
     }
