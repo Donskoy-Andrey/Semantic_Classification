@@ -33,9 +33,6 @@ const ZipUploadComponent = ({ docsNumber, openModal }) => {
             const response = await fetch(`${process.env.REACT_APP_BACKEND}/upload_zip`, {
                 method: 'POST',
                 body: formData,
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                },
             });
             if (!response.ok) {
                 throw new Error('Failed to upload file');
