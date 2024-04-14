@@ -35,8 +35,8 @@ class MainPage extends React.Component {
                 return response.json();
             })
             .then(data => {
-                console.log("init data: ", data);
-                this.setState({ documentTypes: data }); // Set the fetched data to state
+                // console.log("init data: ", data);
+                this.setState({documentTypes: data}); // Set the fetched data to state
             })
             .catch(error => {
                 console.error('Error fetching data:', error);
@@ -46,31 +46,31 @@ class MainPage extends React.Component {
 
 
     setFiles = (files) => {
-        this.setState({ files: files });
+        this.setState({files: files});
     }
 
     onDocumentTypeChange = (key) => {
-        this.setState({ currentDocType: key });
-        console.log("choose: ", key);
+        this.setState({currentDocType: key});
+        // console.log("choose: ", key);
     }
 
 
     openExampleModal = () => {
-        console.log("Modal open");
-        this.setState({ isExampleModalOpen: true });
+        // console.log("Modal open");
+        this.setState({isExampleModalOpen: true});
     }
 
     closeExampleModal = () => {
-        console.log("Modal closed");
-        this.setState({ isExampleModalOpen: false });
+        // console.log("Modal closed");
+        this.setState({isExampleModalOpen: false});
     }
     openTypeModal = () => {
-        this.setState({ isTypeModalOpen: true });
+        this.setState({isTypeModalOpen: true});
     }
 
 
     onNewType = (typeName, categories) => {
-        console.log("onNewType", typeName, categories);
+        // console.log("onNewType", typeName, categories);
         fetch(`${process.env.REACT_APP_BACKEND}/update_template`, {
             method: 'POST',
             headers: {
@@ -82,22 +82,32 @@ class MainPage extends React.Component {
             })
         })
             .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
+                console.log(response);
+                // if (!response.status === 200) {
+                //     throw new Error('Network response was not ok');
+                // }
                 return response.json();
             })
             .then(data => {
-                if (data.status === "Success") {
-                    console.log("init data: ", data);
-                    this.setState({documentTypes: data}); // Set the fetched data to state
-                } else {
-                    alert(data.detail.error); // Alert the error message received from the backend
+                console.log(data)
+                if (!(data.status_code===200) && !(typeof data.status_code === 'undefined')) {
+                    console.log("here");
+                    alert(data.error);
+                }
+                else {
+                    if (data.error){
+                        alert(data["error"]);
+                    }
+                    else {
+                        console.log("init data: ", data);
+                        console.log("init data: ", data);
+                        this.setState({documentTypes: data}); // Set the fetched data to state
+                    }
                 }
                 // Handle the fetched data as needed
             })
             .catch(error => {
-                console.error('Error fetching data artmed:', error.detail);
+                console.error('Error fetching data artmed:', error);
                 alert('Error fetching data. Please try again later.');
             })
             .finally(() => {
@@ -108,7 +118,7 @@ class MainPage extends React.Component {
 
     closeTypeModal = () => {
         console.log("Modal closed");
-        this.setState({ isTypeModalOpen: false });
+        this.setState({isTypeModalOpen: false});
     }
 
     setResponse = (data) => {
@@ -117,11 +127,11 @@ class MainPage extends React.Component {
 
     sendExample = async (name) => {
         console.log("Sending example");
-        this.setState({ isExampleModalOpen: false });
+        this.setState({isExampleModalOpen: false});
         console.log('name=', name);
 
-        const requestData = { name: name };
-        this.setState({ loading: true });
+        const requestData = {name: name};
+        this.setState({loading: true});
         console.log(requestData);
         try {
             const response = await fetch(`${process.env.REACT_APP_BACKEND}/handle_example`, {
@@ -137,11 +147,11 @@ class MainPage extends React.Component {
             }
 
             const data = await response.json();
-            this.setState({ responseData: data });
+            this.setState({responseData: data});
         } catch (error) {
             alert("Что-то пошло не так, попробуйте заново");
         } finally {
-            this.setState({ loading: false });
+            this.setState({loading: false});
         }
     };
 

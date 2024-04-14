@@ -18,7 +18,7 @@ export const Categories = (props) => {
     const responseData = props.responseData['files'];
     const status = props.responseData['status'];
 
-    console.log(responseData)
+    // console.log(responseData)
 
     const getCls = (key) => {
         const validType = responseData[key]['valid_type'];

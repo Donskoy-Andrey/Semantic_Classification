@@ -1,24 +1,21 @@
 import os
+import shutil
 import json
 import pandas as pd
+import aiofiles
 import io
 import zipfile
 from fastapi import FastAPI, File, UploadFile, Form, HTTPException, APIRouter
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
-
-
-
 from .model import SemanticModel
 from .parser_file import ParserFile
-
-
-
-app = FastAPI()
+from fastapi.responses import FileResponse
 
 model_ = SemanticModel()
 parser = ParserFile()
 
+app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
@@ -55,83 +52,31 @@ async def read_json_file():
         raise HTTPException(status_code=404, detail="File not found")
 
 
-@app.post("/update_template")
-async def update_template(request: dict):
-    try:
-        json_file_path = os.path.join("/app/data.json")
-        with open(json_file_path, "r", encoding="utf-8") as file:
-            data = json.load(file)
-
-        if len(request['categories']) == 0:
-            return HTTPException(status_code=500, detail={'error': "Вы не выбрали категории"})
-
-        new_key = 'custom_key_'
-        numeric_ending = 0
-        for key in data:
-            if request['name'] == data[key]["name"]:
-                return HTTPException(status_code=500, detail={'error': f"Имя {request['name']} уже существует!"})
-
-            if new_key + str(numeric_ending) in data:
-                numeric_ending += 1
-
-        new_key = 'custom_key_' + str(numeric_ending)
-
-        new_value = {
-            'name': request['name'],
-            'categories': request['categories'],
-            'docs_number': len(request['categories'])
-        }
-        data[new_key] = new_value
-        with open(json_file_path, "w", encoding="utf-8") as file:
-            json.dump(data, file)
-        return JSONResponse(content=data, status_code=200)
-    except Exception as e:
-        raise HTTPException(status_code=500, detail={'error': str(e)})
-
-
 @app.post("/upload")
 async def upload_files(files: list[UploadFile] = File(...), doctype: str = Form(...)):
     resp = {"files": {}}
     data = {'filename': [], 'text': []}
+    read_config = {".txt": parser.read_txt,
+                   ".rtf": parser.read_rtf,
+                   ".pdf": parser.read_pdf,
+                   ".xlsx": parser.read_xlsx,
+                   ".docx": parser.read_docx,
+                   }
     try:
         for file in files:
-            if file.filename.endswith(".txt"):
-                contents = parser.read_txt(file)
+            contents = await read_config[os.path.splitext(file.filename)[1]](file)
+            data["filename"].append(file.filename)
+            data["text"].append(contents)
 
-                data["filename"].append(file.filename)
-                data["text"].append(contents)
+        # Parse json
+        json_file_path = os.path.join(os.path.dirname(__file__), "/app/data.json")
+        with open(json_file_path, "r", encoding="utf-8") as file:
+            json_file = json.load(file)
+        cats = json_file[doctype]['categories']
+        cats = {cat: 1 for cat in cats}
 
-            if file.filename.endswith(".rtf"):
-                contents = parser.read_rtf(file)
-                data["filename"].append(file.filename)
-                data["text"].append(contents)
-
-            if file.filename.endswith(".pdf"):
-                contents = parser.read_pdf(file)
-                data["filename"].append(file.filename)
-                data["text"].append(contents)
-
-            if file.filename.endswith(".xlsx"):
-                print(file.filename)
-                contents = parser.read_xlsx(file)
-                data["filename"].append(file.filename)
-                data["text"].append(contents)
-
-            if file.filename.endswith(".docx"):
-                contents = parser.read_docx(file)
-                data["filename"].append(file.filename)
-                data["text"].append(contents)
-
-            # Parse json
-            json_file_path = os.path.join(os.path.dirname(__file__), "/app/data.json")
-            with open(json_file_path, "r", encoding="utf-8") as file:
-                json_file = json.load(file)
-            cats = json_file[doctype]['categories']
-            cats = {cat: 1 for cat in cats}
-
-            df_data = pd.DataFrame(data)
-            res_data = model_.predict(df_data)
-            print(f'{res_data=}')
+        df_data = pd.DataFrame(data)
+        res_data = model_.predict(df_data)
 
         total_status = True
         for filename, category in res_data.items():
@@ -200,3 +145,63 @@ async def handle_example(request: dict):
         return JSONResponse(content={"message": "Failed to upload files", "error": "wrong format"}, status_code=500)
 
     return JSONResponse(content=res, status_code=200)
+
+
+@app.post("/upload_zip")
+async def upload_zip(file: UploadFile = File(...)):
+    async with aiofiles.open(f'/app/tmp/{file.filename}', 'wb') as out_file:
+        while content := await file.read(1024):  # async read chunk
+            await out_file.write(content)  # async write chunk
+
+    archive_name = os.path.splitext(file.filename)[0]
+
+    os.mkdir(f"/app/tmp/{archive_name}")
+    with zipfile.ZipFile(f'/app/tmp/{file.filename}') as raw_zipfile:
+        raw_zipfile.extractall(path=f"/app/tmp/{archive_name}")
+
+    filenames = []
+    for filename in os.listdir(f"/app/tmp/{archive_name}"):
+        filenames.append("/app/tmp/" + filename)
+    print(filenames) # <-- ТУТ ВСЕ ПОЛНЫЕ ПУТИ К ФАЙЛАМ
+    # FUNCTION TO READ FILES
+    # FUNCTION TO PASS FILES TO MODEL
+    # FUNCTION TO CREATE RESPONSE
+    try:
+        os.remove(f"/app/tmp/{file.filename}")
+        shutil.rmtree(f"/app/tmp/{archive_name}")
+    except (FileNotFoundError, ):
+        pass
+    return JSONResponse(content={}, status_code=200)
+
+@app.post("/update_template")
+async def update_template(request: dict):
+    try:
+        json_file_path = os.path.join("/app/data.json")
+        with open(json_file_path, "r", encoding="utf-8") as file:
+            data = json.load(file)
+
+        if len(request['categories']) == 0:
+            return JSONResponse(status_code=200, content={'error': "No categories have been chosen!"})
+
+        new_key = 'custom_key_'
+        numeric_ending = 0
+        for key in data:
+            if request['name'] == data[key]["name"]:
+                return JSONResponse(status_code=200, content={'error': f"Name {request['name']} already exists!"})
+
+            if new_key + str(numeric_ending) in data:
+                numeric_ending += 1
+
+        new_key = 'custom_key_' + str(numeric_ending)
+
+        new_value = {
+            'name': request['name'],
+            'categories': request['categories'],
+            'docs_number': len(request['categories'])
+        }
+        data[new_key] = new_value
+        with open(json_file_path, "w", encoding="utf-8") as file:
+            json.dump(data, file)
+        return JSONResponse(content=data, status_code=200)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail={'error': str(e)})
