@@ -1,11 +1,14 @@
 import os
 import json
+import shutil
+
 import pandas as pd
 from fastapi import FastAPI, File, UploadFile, Form, HTTPException, APIRouter
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 from .model import SemanticModel
 from .parser_file import ParserFile
+from fastapi.responses import FileResponse
 
 model_ = SemanticModel()
 parser = ParserFile()
@@ -142,5 +145,15 @@ async def handle_example(request: dict):
 
 @app.post("/upload_zip")
 async def upload_zip(file: UploadFile = File(...)):
-    print(file.filename)
-    return JSONResponse(content={}, status_code=200)
+    # Проверяем, что файл - zip
+    if not file.filename.endswith(".zip"):
+        raise HTTPException(status_code=400, detail="Uploaded file must be a .zip file")
+
+    # Сохраняем файл на диск
+    file_path = os.path.join("/app", file.filename)
+    with open(file_path, "wb") as buffer:
+        shutil.copyfileobj(file.file, buffer)
+
+    # Отправляем обратно тот же файл
+    return FileResponse(file_path)
+3
