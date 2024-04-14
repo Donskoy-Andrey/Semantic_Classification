@@ -120,7 +120,7 @@ const ZipUploadComponent = ({ docsNumber, openModal }) => {
                             </button>
                         </div>
                     )}
-                    <button className="btn btn-success modal-button" onClick={handleExample}>Пример запроса</button>
+                    {/*<button className="btn btn-success modal-button" onClick={handleExample}>Пример запроса</button>*/}
 
                 </div>
                 {loading && (
