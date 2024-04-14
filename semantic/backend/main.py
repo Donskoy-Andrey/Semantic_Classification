@@ -209,10 +209,11 @@ async def upload_zip(file: UploadFile = File(...)):
     filenames = []
     for filename in os.listdir(f"/app/tmp/{archive_name}"):
         filenames.append("/app/tmp/" + filename)
-    print(filenames) # <-- ТУТ ВСЕ ПОЛНЫЕ ПУТИ К ФАЙЛАМ
-    # FUNCTION TO READ FILES
-    # FUNCTION TO PASS FILES TO MODEL
-    # FUNCTION TO CREATE RESPONSE
+    print(filenames)  # <-- ТУТ ВСЕ ПОЛНЫЕ ПУТИ К ФАЙЛАМ
+    path_to_mapping = read_doc_zip # FUNCTION TO READ FILES
+    print(path_to_mapping)
+    create_folders_and_sort_files(path_to_mapping) # FUNCTION TO PASS FILES TO MODEL
+    create_zip_response() # FUNCTION TO CREATE RESPONSE
     try:
         os.remove(f"/app/tmp/{file.filename}")
         shutil.rmtree(f"/app/tmp/{archive_name}")
