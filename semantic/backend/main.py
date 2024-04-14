@@ -147,31 +147,42 @@ async def handle_example(request: dict):
     return JSONResponse(content=res, status_code=200)
 
 
+# @app.post("/upload_zip")
+# async def upload_zip(file: UploadFile = File(...)):
+#     async with aiofiles.open(f'/app/tmp/{file.filename}', 'wb') as out_file:
+#         while content := await file.read(1024):  # async read chunk
+#             await out_file.write(content)  # async write chunk
+#
+#     archive_name = os.path.splitext(file.filename)[0]
+#
+#     os.mkdir(f"/app/tmp/{archive_name}")
+#     with zipfile.ZipFile(f'/app/tmp/{file.filename}') as raw_zipfile:
+#         raw_zipfile.extractall(path=f"/app/tmp/{archive_name}")
+#
+#     filenames = []
+#     for filename in os.listdir(f"/app/tmp/{archive_name}"):
+#         filenames.append("/app/tmp/" + filename)
+#     print(filenames) # <-- ТУТ ВСЕ ПОЛНЫЕ ПУТИ К ФАЙЛАМ
+#     # FUNCTION TO READ FILES
+#     # FUNCTION TO PASS FILES TO MODEL
+#     # FUNCTION TO CREATE RESPONSE
+#     try:
+#         os.remove(f"/app/tmp/{file.filename}")
+#         shutil.rmtree(f"/app/tmp/{archive_name}")
+#     except (FileNotFoundError, ):
+#         pass
+#     return JSONResponse(content={}, status_code=200)
+
 @app.post("/upload_zip")
 async def upload_zip(file: UploadFile = File(...)):
-    async with aiofiles.open(f'/app/tmp/{file.filename}', 'wb') as out_file:
-        while content := await file.read(1024):  # async read chunk
-            await out_file.write(content)  # async write chunk
+    if not file.filename.endswith(".zip"):
+        raise HTTPException(status_code=400, detail="Uploaded file must be a .zip file")
 
-    archive_name = os.path.splitext(file.filename)[0]
+    file_path = os.path.join("/app", file.filename)
+    with open(file_path, "wb") as buffer:
+        shutil.copyfileobj(file.file, buffer)
 
-    os.mkdir(f"/app/tmp/{archive_name}")
-    with zipfile.ZipFile(f'/app/tmp/{file.filename}') as raw_zipfile:
-        raw_zipfile.extractall(path=f"/app/tmp/{archive_name}")
-
-    filenames = []
-    for filename in os.listdir(f"/app/tmp/{archive_name}"):
-        filenames.append("/app/tmp/" + filename)
-    print(filenames) # <-- ТУТ ВСЕ ПОЛНЫЕ ПУТИ К ФАЙЛАМ
-    # FUNCTION TO READ FILES
-    # FUNCTION TO PASS FILES TO MODEL
-    # FUNCTION TO CREATE RESPONSE
-    try:
-        os.remove(f"/app/tmp/{file.filename}")
-        shutil.rmtree(f"/app/tmp/{archive_name}")
-    except (FileNotFoundError, ):
-        pass
-    return JSONResponse(content={}, status_code=200)
+    return FileResponse(file_path)
 
 @app.post("/update_template")
 async def update_template(request: dict):
