@@ -171,3 +171,4 @@ class SemanticModel:
         except Exception as e:
             preds = dict(zip(filenames, [None for _ in filenames]))
         return preds
+

@@ -6,14 +6,14 @@ import aiofiles
 import io
 import zipfile
 from fastapi import FastAPI, File, UploadFile, Form, HTTPException, APIRouter
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, FileResponse
 from fastapi.middleware.cors import CORSMiddleware
 from .model import SemanticModel
-from .parser_file import ParserFile
-from fastapi.responses import FileResponse
+from .parser_file import ParserFile, ParserZip
 
 model_ = SemanticModel()
 parser = ParserFile()
+parser_zip = ParserZip()
 
 app = FastAPI()
 
@@ -146,6 +146,53 @@ async def handle_example(request: dict):
 
     return JSONResponse(content=res, status_code=200)
 
+
+async def read_doc_zip(paths: list[str]) -> dict:
+    data = {'filename': [], 'text': []}
+    read_config = {".txt": parser_zip.read_txt,
+                   ".rtf": parser_zip.read_rtf,
+                   ".pdf": parser_zip.read_pdf,
+                   ".xlsx": parser_zip.read_xlsx,
+                   ".docx": parser_zip.read_docx,
+                   }
+
+    for path in paths:
+        contents = await read_config[os.path.splitext(os.path.splitext(path)[1])](path)
+        data["filename"].append(path)
+        data["text"].append(contents)
+    print(data)
+    preds = model_.predict(pd.DataFrame(data))
+    return preds
+
+def create_folders_and_sort_files(folders_dict):
+    for folder_name, files_list in folders_dict.items():
+        if not os.path.exists(folder_name):
+            os.makedirs(folder_name)
+
+        for file_path in files_list:
+            file_name = os.path.basename(file_path)
+            destination_path = os.path.join(folder_name, file_name)
+            shutil.copy(file_path, destination_path)
+
+
+async def create_zip_response():
+    """
+    Создает ZIP-архив из папки, включая все файлы внутри.
+
+    :param folder_path: Путь к папке, которую нужно запаковать.
+    :param output_zip_path: Путь к выходному ZIP-файлу.
+    """
+    try:
+        with zipfile.ZipFile('/app/tmp', 'w', zipfile.ZIP_DEFLATED) as zipf:
+            for root, _, files in os.walk('/app/tmp'):
+                for file in files:
+                    file_path = os.path.join(root, file)
+                    # Добавляем файл в архив с сохранением относительной структуры папок
+                    zipf.write(file_path, os.path.relpath('/app/tmp/', '/app/tmp'))
+        print(f"Папка успешно запакована в /app/tmp/")
+    except Exception as e:
+        print(f"Ошибка при создании ZIP-архива: {e}")
+    return FileResponse(r'/app/tmp.zip')
 
 @app.post("/upload_zip")
 async def upload_zip(file: UploadFile = File(...)):
