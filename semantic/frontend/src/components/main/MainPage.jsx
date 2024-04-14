@@ -83,21 +83,26 @@ class MainPage extends React.Component {
         })
             .then(response => {
                 console.log(response);
-                if (!response.status === 200) {
-                    throw new Error('Network response was not ok');
-                }
+                // if (!response.status === 200) {
+                //     throw new Error('Network response was not ok');
+                // }
                 return response.json();
             })
             .then(data => {
                 console.log(data)
                 if (!(data.status_code===200) && !(typeof data.status_code === 'undefined')) {
                     console.log("here");
-                    alert(data.detail.error);
+                    alert(data.error);
                 }
                 else {
-                    console.log("init data: ", data);
-                    console.log("init data: ", data);
-                    this.setState({documentTypes: data}); // Set the fetched data to state
+                    if (data.error){
+                        alert(data["error"]);
+                    }
+                    else {
+                        console.log("init data: ", data);
+                        console.log("init data: ", data);
+                        this.setState({documentTypes: data}); // Set the fetched data to state
+                    }
                 }
                 // Handle the fetched data as needed
             })

@@ -156,4 +156,36 @@ async def upload_zip(file: UploadFile = File(...)):
 
     # Отправляем обратно тот же файл
     return FileResponse(file_path)
-3
+
+@app.post("/update_template")
+async def update_template(request: dict):
+    try:
+        json_file_path = os.path.join("/app/data.json")
+        with open(json_file_path, "r", encoding="utf-8") as file:
+            data = json.load(file)
+
+        if len(request['categories']) == 0:
+            return JSONResponse(status_code=200, content={'error': "No categories have been chosen!"})
+
+        new_key = 'custom_key_'
+        numeric_ending = 0
+        for key in data:
+            if request['name'] == data[key]["name"]:
+                return JSONResponse(status_code=200, content={'error': f"Name {request['name']} already exists!"})
+
+            if new_key + str(numeric_ending) in data:
+                numeric_ending += 1
+
+        new_key = 'custom_key_' + str(numeric_ending)
+
+        new_value = {
+            'name': request['name'],
+            'categories': request['categories'],
+            'docs_number': len(request['categories'])
+        }
+        data[new_key] = new_value
+        with open(json_file_path, "w", encoding="utf-8") as file:
+            json.dump(data, file)
+        return JSONResponse(content=data, status_code=200)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail={'error': str(e)})
