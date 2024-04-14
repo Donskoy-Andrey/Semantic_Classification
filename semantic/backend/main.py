@@ -207,14 +207,14 @@ async def upload_zip(file: UploadFile = File(...)):
     for filename in os.listdir(f"/app/tmp/{archive_name}"):
         filenames.append(f"/app/tmp/{archive_name}/" + filename)
     print(filenames)
-    # path_to_mapping = await read_doc_zip(filenames) # FUNCTION TO READ FILES
-    # print(path_to_mapping)
-    # create_folders_and_sort_files(path_to_mapping, f"/app/tmp/{archive_name}/") # FUNCTION TO PASS FILES TO MODEL
-    # response = await create_zip_response() # FUNCTION TO CREATE RESPONSE
+    path_to_mapping = await read_doc_zip(filenames) # FUNCTION TO READ FILES
+    print(path_to_mapping)
+    create_folders_and_sort_files(path_to_mapping, f"/app/tmp/{archive_name}/") # FUNCTION TO PASS FILES TO MODEL
+    response = await create_zip_response() # FUNCTION TO CREATE RESPONSE
     try:
         pass
-        # os.remove(f"/app/tmp/{file.filename}")
-        # shutil.rmtree(f"/app/tmp/{archive_name}")
+        os.remove(f"/app/tmp/{file.filename}")
+        shutil.rmtree(f"/app/tmp/{archive_name}")
     except (FileNotFoundError, ):
         pass
     return JSONResponse(content={}, status_code=200)
