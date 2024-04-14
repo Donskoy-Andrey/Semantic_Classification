@@ -1,6 +1,8 @@
 import os
 import json
 import pandas as pd
+import aiofiles
+import zipfile
 from fastapi import FastAPI, File, UploadFile, Form, HTTPException, APIRouter
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
@@ -140,7 +142,13 @@ async def handle_example(request: dict):
 
     return JSONResponse(content=res, status_code=200)
 
+
 @app.post("/upload_zip")
 async def upload_zip(file: UploadFile = File(...)):
-    print(file.filename)
+    async with aiofiles.open(f'/app/tmp/{file.filename}', 'wb') as out_file:
+        while content := await file.read(1024):  # async read chunk
+            await out_file.write(content)  # async write chunk
+
+    with zipfile.ZipFile(f'/app/tmp/{file.filename}') as raw_zipfile:
+        print(raw_zipfile.infolist())
     return JSONResponse(content={}, status_code=200)

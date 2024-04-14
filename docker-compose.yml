@@ -10,6 +10,7 @@ services:
       - ./semantic/backend:/app/backend
       - ./data/model.sav:/app/data/model.sav
       - ./semantic/data.json:/app/data.json
+      - ./semantic/backend/tmp:/app/tmp
     command: >
        /bin/sh -c "python -m poetry run uvicorn backend.main:app --host 0.0.0.0 --port 8000 --reload"
 
