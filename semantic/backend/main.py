@@ -1,8 +1,7 @@
 import os
 import json
 import pandas as pd
-import zipfile
-from fastapi import FastAPI, File, UploadFile, Form, HTTPException
+from fastapi import FastAPI, File, UploadFile, Form, HTTPException, APIRouter
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 from .model import SemanticModel
@@ -47,77 +46,21 @@ async def read_json_file():
         raise HTTPException(status_code=404, detail="File not found")
 
 
-@app.post("/update_template")
-async def update_template(request: dict):
-    try:
-        json_file_path = os.path.join("/app/data.json")
-        with open(json_file_path, "r", encoding="utf-8") as file:
-            data = json.load(file)
-
-        if len(request['categories']) == 0:
-            return HTTPException(status_code=500, detail={'error': "Вы не выбрали категории"})
-
-        new_key = 'custom_key_'
-        numeric_ending = 0
-        for key in data:
-            if request['name'] == data[key]["name"]:
-                return HTTPException(status_code=500, detail={'error': f"Имя {request['name']} уже существует!"})
-
-            if new_key + str(numeric_ending) in data:
-                numeric_ending += 1
-
-        new_key = 'custom_key_' + str(numeric_ending)
-
-        new_value = {
-            'name': request['name'],
-            'categories': request['categories'],
-            'docs_number': len(request['categories'])
-        }
-        data[new_key] = new_value
-        with open(json_file_path, "w", encoding="utf-8") as file:
-            json.dump(data, file)
-        return JSONResponse(content=data, status_code=200)
-    except Exception as e:
-        raise HTTPException(status_code=500, detail={'error': str(e)})
-
-
 @app.post("/upload")
 async def upload_files(files: list[UploadFile] = File(...), doctype: str = Form(...)):
     resp = {"files": {}}
     data = {'filename': [], 'text': []}
+    read_config = {".txt": parser.read_txt,
+                   ".rtf": parser.read_rtf,
+                   ".pdf": parser.read_pdf,
+                   ".xlsx": parser.read_xlsx,
+                   ".docx": parser.read_docx,
+                   }
     try:
         for file in files:
-            print(file.filename)
-
-            if file.filename.endswith(".txt"):
-                contents = await parser.read_txt(file)
-
-                data["filename"].append(file.filename)
-                data["text"].append(contents)
-
-            if file.filename.endswith(".rtf"):
-                contents = await parser.read_rtf(file)
-
-                data["filename"].append(file.filename)
-                data["text"].append(contents)
-
-            if file.filename.endswith(".pdf"):
-                contents = await parser.read_pdf(file)
-
-                data["filename"].append(file.filename)
-                data["text"].append(contents)
-
-            if file.filename.endswith(".xlsx"):
-                contents = await parser.read_xlsx(file)
-
-                data["filename"].append(file.filename)
-                data["text"].append(contents)
-
-            if file.filename.endswith(".docx"):
-                contents = await parser.read_docx(file)
-
-                data["filename"].append(file.filename)
-                data["text"].append(contents)
+            contents = await read_config[os.path.splitext(file.filename)[1]](file)
+            data["filename"].append(file.filename)
+            data["text"].append(contents)
 
         # Parse json
         json_file_path = os.path.join(os.path.dirname(__file__), "/app/data.json")
@@ -125,11 +68,9 @@ async def upload_files(files: list[UploadFile] = File(...), doctype: str = Form(
             json_file = json.load(file)
         cats = json_file[doctype]['categories']
         cats = {cat: 1 for cat in cats}
-        print('6')
 
         df_data = pd.DataFrame(data)
         res_data = model_.predict(df_data)
-        print('7')
 
         total_status = True
         for filename, category in res_data.items():
@@ -154,7 +95,6 @@ async def upload_files(files: list[UploadFile] = File(...), doctype: str = Form(
                 total_status = False
 
         # resp : {'files': {'1.txt': {'category': 'application'}}}
-        print('8')
 
         if total_status is True:
             resp["status"] = "ok"
@@ -200,13 +140,7 @@ async def handle_example(request: dict):
 
     return JSONResponse(content=res, status_code=200)
 
-
-app.post("/upload_zip")
-def handle_upload_zip(file: UploadFile = File(...)):
-    # with ZipFile(os.path.splitext(file.filename)[0] + "_processed" +
-    #              os.path.splitext(file.filename)[1], "x") as result_zip_file:
-    with ZipFile(file, 'r') as raw_zip_file:
-        print(raw_zip_file.infolist())
-
-
-
+@app.post("/upload_zip")
+async def upload_zip(file: UploadFile = File(...)):
+    print(file.filename)
+    return JSONResponse(content={}, status_code=200)

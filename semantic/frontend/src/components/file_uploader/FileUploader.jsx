@@ -10,9 +10,9 @@ const FileUploader = (props) => {
     const docs_number = props.documentTypes[props.currentDocType].docs_number;
 
     const handleFileChange = (e) => {
-        console.log('supertest ', selectedFiles === e.target.files);
+        // console.log('supertest ', selectedFiles === e.target.files);
         setSelectedFiles([...selectedFiles, ...e.target.files]);
-        console.log('selected files: ', e.target.files[0]);
+        // console.log('selected files: ', e.target.files[0]);
     };
 
 

@@ -20,15 +20,16 @@ const ZipUploadComponent = ({ docsNumber, openModal }) => {
     };
 
     const handleFileChange = (files) => {
+        console.log('set_files', files[0]);
         setUploadedFile(files[0]);
     }
 
     const handleUpload = async (files) => {
         const formData = new FormData();
-        formData.append('file', files[0]); // Assuming only one file is selected
+        formData.append('file', uploadedFile); // Assuming only one file is selected
 
         try {
-            console.log("response")
+            // console.log("response")
             const response = await fetch(`${process.env.REACT_APP_BACKEND}/upload_zip`, {
                 method: 'POST',
                 body: formData,
