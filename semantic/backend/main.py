@@ -1,4 +1,5 @@
 import os
+import shutil
 import json
 import shutil
 
@@ -152,6 +153,22 @@ async def upload_zip(file: UploadFile = File(...)):
         while content := await file.read(1024):  # async read chunk
             await out_file.write(content)  # async write chunk
 
+    archive_name = os.path.splitext(file.filename)[0]
+
+    os.mkdir(f"/app/tmp/{archive_name}")
     with zipfile.ZipFile(f'/app/tmp/{file.filename}') as raw_zipfile:
-        print(raw_zipfile.infolist())
+        raw_zipfile.extractall(path=f"/app/tmp/{archive_name}")
+
+    filenames = []
+    for filename in os.listdir(f"/app/tmp/{archive_name}"):
+        filenames.append("/app/tmp/" + filename)
+    print(filenames) # <-- ТУТ ВСЕ ПОЛНЫЕ ПУТИ К ФАЙЛАМ
+    # FUNCTION TO READ FILES
+    # FUNCTION TO PASS FILES TO MODEL
+    # FUNCTION TO CREATE RESPONSE
+    try:
+        os.remove(f"/app/tmp/{file.filename}")
+        shutil.rmtree(f"/app/tmp/{archive_name}")
+    except (FileNotFoundError, ):
+        pass
     return JSONResponse(content={}, status_code=200)
