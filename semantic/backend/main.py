@@ -198,3 +198,8 @@ async def handle_example(request: dict):
         return JSONResponse(content={"message": "Failed to upload files", "error": "wrong format"}, status_code=500)
 
     return JSONResponse(content=res, status_code=200)
+
+@app.post("/upload_zip")
+async def upload_zip(file: UploadFile = File(...)):
+    print(file.filename)
+    return JSONResponse(content={}, status_code=200)
