@@ -217,7 +217,7 @@ async def upload_zip(file: UploadFile = File(...)):
         shutil.rmtree(f"/app/tmp/{archive_name}")
     except (FileNotFoundError, ):
         pass
-    return JSONResponse(content={}, status_code=200)
+    return JSONResponse(content=response, status_code=200)
 
 @app.post("/update_template")
 async def update_template(request: dict):
